@@ -45,7 +45,18 @@
   font-size: 4rem;
 }
 
-.title,
+
+.description a {
+  color: #0070f3;
+  text-decoration: none;
+}
+
+.description a:hover,
+.description a:focus,
+.description a:active {
+  text-decoration: underline;
+}
+
 .description {
   text-align: center;
 }

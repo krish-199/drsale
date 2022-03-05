@@ -1,8 +1,12 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import Link from "next/link";
+import useUser from "@/lib/useUser";
+import clientPromise from "@/lib/mongodb";
+import styles from "../styles/Home.module.css";
 
-export default function Home() {
+export default function Home({ isConnected }) {
+  const { user } = useUser();
   return (
     <div className={styles.container}>
       <Head>
@@ -16,11 +20,21 @@ export default function Home() {
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
+        {user?.isLoggedIn ? (
+          <p className={styles.description}>Welcome Captain {user.email}</p>
+        ) : (
+          <p className={styles.description}>
+            You are not Logged In <Link href="/login">Please Login</Link>
+          </p>
+        )}
+        {isConnected ? (
+          <h2 className="subtitle">You are connected to MongoDB</h2>
+        ) : (
+          <h2 className="subtitle">
+            You are NOT connected to MongoDB. Check the <code>README.md</code>{" "}
+            for instructions.
+          </h2>
+        )}
         <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>
             <h2>Documentation &rarr;</h2>
@@ -58,12 +72,31 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
+  );
+}
+
+export async function getServerSideProps(context) {
+  try {
+    // client.db() will be the default database passed in the MONGODB_URI
+    // You can change the database by calling the client.db() function and specifying a database like:
+    // const db = client.db("myDatabase");
+    // Then you can execute queries against your database like so:
+    // db.find({}) or any of the MongoDB Node Driver commands
+    await clientPromise;
+    return {
+      props: { isConnected: true },
+    };
+  } catch (e) {
+    console.error(e);
+    return {
+      props: { isConnected: false },
+    };
+  }
 }
