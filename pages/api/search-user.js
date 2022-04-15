@@ -4,12 +4,13 @@ export default async (req, res) => {
   const client = await clientPromise;
 
   const db = client.db();
-  console.log("Priniting req", req.body);
+  const body = JSON.parse(req.body);
+  let re = new RegExp(body.searchValue);
   const users = await db
     .collection("users")
-    .find({ name: /jo/ })
+    .find({ [body.searchField]: re })
     .limit(50)
     .toArray();
-
+    
   res.json(users);
 };
