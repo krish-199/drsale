@@ -33,11 +33,17 @@ import { CreatableSelect } from "chakra-react-select";
 export default function Profile(props) {
   const [selected, setSelected] = useState("");
   const [aKey, setAKey] = useState(0);
-  let peopleList = [];
-  const fetchData = () => {
-    fetch("/api/search-user", { method: "POST", body: "k" })
+  const [peopleList, setPeopleList] = useState([]);
+  const fetchData = (searchId, searchValue) => {
+    console.log("print search val", searchId, searchValue);
+    fetch("/api/search-user", {
+      method: "POST",
+      body: JSON.stringify({ searchField: "name", searchValue: "jo" }),
+    })
       .then((res) => res.json())
-      .then((data) => (peopleList = data))
+      .then((data) =>
+        setPeopleList(data.map((e) => ({ label: e.name, value: e._id })))
+      )
       .catch((err) => console.error(err));
   };
   const people = [
@@ -128,12 +134,14 @@ export default function Profile(props) {
                 onChange={(p) => {
                   console.log(
                     "Print main box",
+                    p,
                     p.target.value,
                     p.target.id,
-                    peopleList
+                    peopleList,
+                    peopleList.length
                   );
                   if (p.target.value.length > 2 && !peopleList.length > 0)
-                    fetchData();
+                    fetchData(p.target.id, p.target.value);
                 }}
               >
                 <FormControl as={GridItem} colSpan={[6, 3]}>
@@ -164,7 +172,14 @@ export default function Profile(props) {
                   /> */}
                   <CreatableSelect
                     name="first_name"
-                    instanceId="first_name"
+                    id="field1"
+                    inputId="first-press"
+                    instanceId={`112-value`}
+                    autoComplete="off"
+                    isLoading={!(peopleList.length > 0)}
+                    options={(peopleList.length > 0 && peopleList) || []}
+                    noOptionsMessage={"Please enter atleast 2 letters..."}
+                    // key={JSON.stringify(peopleList.length)}
                     chakraStyles={chakraStyles}
                     focusBorderColor="pink.400"
                     errorBorderColor="red.500"
@@ -172,7 +187,6 @@ export default function Profile(props) {
                     selectedOptionStyle="check"
                     selectedOptionColor="pink"
                     colorScheme="purple"
-                    options={people2}
                     placeholder="Select First Name..."
                     closeMenuOnSelect={true}
                     size="sm"
