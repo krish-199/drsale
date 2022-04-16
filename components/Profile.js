@@ -31,7 +31,12 @@ import {
 import { CreatableSelect } from "chakra-react-select";
 
 export default function Profile(props) {
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState({
+    _id: "",
+    name: "",
+    email: "",
+    password: "",
+  });
   const [aKey, setAKey] = useState(0);
   const [peopleList, setPeopleList] = useState([]);
   const fetchData = (searchId, searchValue) => {
@@ -41,9 +46,7 @@ export default function Profile(props) {
       body: JSON.stringify({ searchField: "name", searchValue: "jo" }),
     })
       .then((res) => res.json())
-      .then((data) =>
-        setPeopleList(data.map((e) => ({ label: e.name, value: e._id })))
-      )
+      .then((data) => setPeopleList(data))
       .catch((err) => console.error(err));
   };
   const people = [
@@ -137,6 +140,7 @@ export default function Profile(props) {
                     p,
                     p.target.value,
                     p.target.id,
+                    p.target.name,
                     peopleList,
                     peopleList.length
                   );
@@ -177,6 +181,12 @@ export default function Profile(props) {
                     instanceId={`112-value`}
                     autoComplete="off"
                     isLoading={!(peopleList.length > 0)}
+                    allowCreateWhileLoading
+                    getNewOptionData={(inputValue, optionLabel) => ({
+                      name: optionLabel,
+                      // id: inputValue,
+                      __isNew__: true,
+                    })}
                     options={(peopleList.length > 0 && peopleList) || []}
                     noOptionsMessage={"Please enter atleast 2 letters..."}
                     // key={JSON.stringify(peopleList.length)}
@@ -189,9 +199,61 @@ export default function Profile(props) {
                     colorScheme="purple"
                     placeholder="Select First Name..."
                     closeMenuOnSelect={true}
+                    getOptionLabel={(option) => option.name}
+                    getOptionValue={(option) => option._id}
+                    value={selected}
                     size="sm"
-                    onChange={(e) => console.log("print select event", e)}
-                    onCreateOption={(e) => console.log("new create")}
+                    onChange={(e) => {
+                      console.log("print select event", e);
+                      setSelected(e);
+                    }}
+                    onCreateOption={(e) => {
+                      console.log("new create", e);
+                      setSelected({ ...selected, name: e });
+                    }}
+                  />
+                  <CreatableSelect
+                    name="last_name"
+                    id="field1"
+                    inputId="last-press"
+                    instanceId={`114-value`}
+                    autoComplete="off"
+                    isLoading={!(peopleList.length > 0)}
+                    allowCreateWhileLoading
+                    getNewOptionData={(inputValue, optionLabel) => ({
+                      email: optionLabel,
+                      // id: inputValue,
+                      __isNew__: true,
+                    })}
+                    options={(peopleList.length > 0 && peopleList) || []}
+                    noOptionsMessage={"Please enter atleast 2 letters..."}
+                    // key={JSON.stringify(peopleList.length)}
+                    chakraStyles={chakraStyles}
+                    focusBorderColor="pink.400"
+                    errorBorderColor="red.500"
+                    tagVariant="outline"
+                    selectedOptionStyle="check"
+                    selectedOptionColor="pink"
+                    colorScheme="purple"
+                    placeholder="Select First Name..."
+                    closeMenuOnSelect={true}
+                    getOptionLabel={(option) => option.email}
+                    getOptionValue={(option) => option._id}
+                    value={selected}
+                    size="sm"
+                    onChange={(e) => {
+                      console.log("print select event", e);
+                      setSelected(e);
+                    }}
+                    onCreateOption={(e) => {
+                      console.log(
+                        "new create",
+                        e,
+                        { ...selected, email: e },
+                        selected
+                      );
+                      setSelected({ ...selected, email: e });
+                    }}
                   />
                 </FormControl>
 
@@ -215,7 +277,7 @@ export default function Profile(props) {
                     size="sm"
                     w="full"
                     rounded="md"
-                    defaultValue={selected}
+                    // defaultValue={selected}
                   />
                 </FormControl>
 
