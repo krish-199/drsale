@@ -29,6 +29,7 @@ import {
 } from "@chakra-ui/react";
 
 import { CreatableSelect } from "chakra-react-select";
+import SearchBar from "./search-bar";
 
 export default function Profile(props) {
   const [selected, setSelected] = useState({
@@ -37,7 +38,7 @@ export default function Profile(props) {
     email: "",
     password: "",
   });
-  const [aKey, setAKey] = useState(0);
+  const [isCreated, setCreated] = useState(false);
   const [peopleList, setPeopleList] = useState([]);
   const fetchData = (searchId, searchValue) => {
     console.log("print search val", searchId, searchValue);
@@ -63,25 +64,6 @@ export default function Profile(props) {
       value: s.image,
     };
   });
-
-  const chakraStyles = {
-    dropdownIndicator: (provided, state) => ({
-      ...provided,
-      bg: "transparent",
-    }),
-    control: (provided, state) => ({
-      ...provided,
-      rounded: "md",
-      shadow: "sm",
-      // mt: 1,
-      h: 8,
-    }),
-    container: (provided, state) => ({
-      ...provided,
-      pt: 1,
-      h: 8,
-    }),
-  };
 
   return (
     <Box mt={[10, 0]}>
@@ -157,103 +139,13 @@ export default function Profile(props) {
                   >
                     First name
                   </FormLabel>
-                  {/* <Input
-                    type="text"
-                    name="first_name"
-                    id="first_name"
-                    autoComplete="off"
-                    mt={1}
-                    focusBorderColor="pink.400"
-                    shadow="sm"
-                    size="sm"
-                    w="full"
-                    rounded="md"
-                    onChange={(e) => {
-                      console.log("before set", e.target.value);
-                      setSelected(e.target.value);
-                      setAKey((k) => k + 1);
-                    }}
-                  /> */}
-                  <CreatableSelect
-                    name="first_name"
-                    id="field1"
-                    inputId="first-press"
-                    instanceId={`112-value`}
-                    autoComplete="off"
-                    isLoading={!(peopleList.length > 0)}
-                    allowCreateWhileLoading
-                    getNewOptionData={(inputValue, optionLabel) => ({
-                      name: optionLabel,
-                      // id: inputValue,
-                      __isNew__: true,
-                    })}
-                    options={(peopleList.length > 0 && peopleList) || []}
-                    noOptionsMessage={"Please enter atleast 2 letters..."}
-                    // key={JSON.stringify(peopleList.length)}
-                    chakraStyles={chakraStyles}
-                    focusBorderColor="pink.400"
-                    errorBorderColor="red.500"
-                    tagVariant="outline"
-                    selectedOptionStyle="check"
-                    selectedOptionColor="pink"
-                    colorScheme="purple"
-                    placeholder="Select First Name..."
-                    closeMenuOnSelect={true}
-                    getOptionLabel={(option) => option.name}
-                    getOptionValue={(option) => option._id}
-                    value={selected}
-                    size="sm"
-                    onChange={(e) => {
-                      console.log("print select event", e);
-                      setSelected(e);
-                    }}
-                    onCreateOption={(e) => {
-                      console.log("new create", e);
-                      setSelected({ ...selected, name: e });
-                    }}
-                  />
-                  <CreatableSelect
-                    name="last_name"
-                    id="field1"
-                    inputId="last-press"
-                    instanceId={`114-value`}
-                    autoComplete="off"
-                    isLoading={!(peopleList.length > 0)}
-                    allowCreateWhileLoading
-                    getNewOptionData={(inputValue, optionLabel) => ({
-                      email: optionLabel,
-                      // id: inputValue,
-                      __isNew__: true,
-                    })}
-                    options={(peopleList.length > 0 && peopleList) || []}
-                    noOptionsMessage={"Please enter atleast 2 letters..."}
-                    // key={JSON.stringify(peopleList.length)}
-                    chakraStyles={chakraStyles}
-                    focusBorderColor="pink.400"
-                    errorBorderColor="red.500"
-                    tagVariant="outline"
-                    selectedOptionStyle="check"
-                    selectedOptionColor="pink"
-                    colorScheme="purple"
-                    placeholder="Select First Name..."
-                    closeMenuOnSelect={true}
-                    getOptionLabel={(option) => option.email}
-                    getOptionValue={(option) => option._id}
-                    value={selected}
-                    size="sm"
-                    onChange={(e) => {
-                      console.log("print select event", e);
-                      setSelected(e);
-                    }}
-                    onCreateOption={(e) => {
-                      console.log(
-                        "new create",
-                        e,
-                        { ...selected, email: e },
-                        selected
-                      );
-                      setSelected({ ...selected, email: e });
-                    }}
+                  <SearchBar
+                    options={peopleList}
+                    selected={selected}
+                    handleSelected={setSelected}
+                    handleCreation={setCreated}
+                    inputName={"first"}
+                    inputField={"name"}
                   />
                 </FormControl>
 
@@ -266,57 +158,48 @@ export default function Profile(props) {
                   >
                     Last name
                   </FormLabel>
-                  <Input
-                    type="text"
-                    name="last_name"
-                    id="last_name"
-                    autoComplete="family-name"
-                    mt={1}
-                    focusBorderColor="pink.400"
-                    shadow="sm"
-                    size="sm"
-                    w="full"
-                    rounded="md"
-                    // defaultValue={selected}
+                  <SearchBar
+                    options={peopleList}
+                    selected={selected}
+                    handleSelected={setSelected}
+                    handleCreation={setCreated}
+                    inputName={"lemail"}
+                    inputField={"email"}
                   />
                 </FormControl>
 
-                <FormControl as={GridItem} colSpan={[6, 4]}>
+                <FormControl as={GridItem} colSpan={[6, 6]}>
                   <FormLabel
                     htmlFor="email_address"
                     fontSize="sm"
                     fontWeight="md"
                     color={useColorModeValue("gray.700", "gray.50")}
                   >
-                    Email address
+                    Phone Number
                   </FormLabel>
-                  <Input
-                    type="text"
-                    name="email_address"
-                    id="email_address"
-                    autoComplete="email"
-                    mt={1}
-                    focusBorderColor="pink.400"
-                    shadow="sm"
-                    size="sm"
-                    w="full"
-                    rounded="md"
+                  <SearchBar
+                    options={peopleList}
+                    selected={selected}
+                    handleSelected={setSelected}
+                    handleCreation={setCreated}
+                    inputName={"email"}
+                    inputField={"email"}
                   />
                 </FormControl>
 
                 <FormControl as={GridItem} colSpan={[6, 3]}>
                   <FormLabel
-                    htmlFor="country"
+                    htmlFor="gender"
                     fontSize="sm"
                     fontWeight="md"
                     color={useColorModeValue("gray.700", "gray.50")}
                   >
-                    Country / Region
+                    Gender
                   </FormLabel>
                   <Select
-                    id="country"
-                    name="country"
-                    autoComplete="country"
+                    id="gender"
+                    name="gender"
+                    autoComplete="gender"
                     placeholder="Select option"
                     mt={1}
                     focusBorderColor="pink.400"
@@ -326,95 +209,49 @@ export default function Profile(props) {
                     rounded="md"
                     input="U"
                   >
-                    <option>United States</option>
-                    <option>Canada</option>
-                    <option>Mexico</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
                   </Select>
+                </FormControl>
+                <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
+                  <FormLabel
+                    htmlFor="age"
+                    fontSize="sm"
+                    fontWeight="md"
+                    color={useColorModeValue("gray.700", "gray.50")}
+                  >
+                    Age
+                  </FormLabel>
+                  <Input
+                    type="text"
+                    name="age"
+                    id="age"
+                    autoComplete="off"
+                    // mt={1}
+                    focusBorderColor="pink.400"
+                    shadow="sm"
+                    size="sm"
+                    w="full"
+                    rounded="md"
+                    input="U"
+                  />
                 </FormControl>
 
                 <FormControl as={GridItem} colSpan={6}>
                   <FormLabel
-                    htmlFor="street_address"
+                    htmlFor="address"
                     fontSize="sm"
                     fontWeight="md"
                     color={useColorModeValue("gray.700", "gray.50")}
                   >
-                    Street address
+                    Address
                   </FormLabel>
                   <Input
                     type="text"
-                    name="street_address"
-                    id="street_address"
-                    autoComplete="street-address"
-                    mt={1}
-                    focusBorderColor="pink.400"
-                    shadow="sm"
-                    size="sm"
-                    w="full"
-                    rounded="md"
-                  />
-                </FormControl>
-
-                <FormControl as={GridItem} colSpan={[6, 6, null, 2]}>
-                  <FormLabel
-                    htmlFor="city"
-                    fontSize="sm"
-                    fontWeight="md"
-                    color={useColorModeValue("gray.700", "gray.50")}
-                  >
-                    City
-                  </FormLabel>
-                  <Input
-                    type="text"
-                    name="city"
-                    id="city"
-                    autoComplete="city"
-                    mt={1}
-                    focusBorderColor="pink.400"
-                    shadow="sm"
-                    size="sm"
-                    w="full"
-                    rounded="md"
-                  />
-                </FormControl>
-
-                <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
-                  <FormLabel
-                    htmlFor="state"
-                    fontSize="sm"
-                    fontWeight="md"
-                    color={useColorModeValue("gray.700", "gray.50")}
-                  >
-                    State / Province
-                  </FormLabel>
-                  <Input
-                    type="text"
-                    name="state"
-                    id="state"
-                    autoComplete="state"
-                    mt={1}
-                    focusBorderColor="pink.400"
-                    shadow="sm"
-                    size="sm"
-                    w="full"
-                    rounded="md"
-                  />
-                </FormControl>
-
-                <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
-                  <FormLabel
-                    htmlFor="postal_code"
-                    fontSize="sm"
-                    fontWeight="md"
-                    color={useColorModeValue("gray.700", "gray.50")}
-                  >
-                    ZIP / Postal
-                  </FormLabel>
-                  <Input
-                    type="text"
-                    name="postal_code"
-                    id="postal_code"
-                    autoComplete="postal-code"
+                    name="address"
+                    id="address-replaceit"
+                    autoComplete="off"
                     mt={1}
                     focusBorderColor="pink.400"
                     shadow="sm"
@@ -436,6 +273,7 @@ export default function Profile(props) {
                 colorScheme="pink"
                 _focus={{ shadow: "" }}
                 fontWeight="md"
+                disabled={!isCreated}
               >
                 Save
               </Button>
