@@ -28,7 +28,6 @@ import {
   color,
 } from "@chakra-ui/react";
 
-import { CreatableSelect } from "chakra-react-select";
 import SearchBar from "./search-bar";
 
 export default function Profile(props) {
@@ -38,8 +37,10 @@ export default function Profile(props) {
     email: "",
     password: "",
   });
+
   const [isCreated, setCreated] = useState(false);
   const [peopleList, setPeopleList] = useState([]);
+
   const fetchData = (searchId, searchValue) => {
     console.log("print search val", searchId, searchValue);
     fetch("/api/search-user", {
@@ -50,20 +51,6 @@ export default function Profile(props) {
       .then((data) => setPeopleList(data))
       .catch((err) => console.error(err));
   };
-  const people = [
-    { name: "Dan Abramov", image: "https://bit.ly/dan-abramov" },
-    { name: "Kent Dodds", image: "https://bit.ly/kent-c-dodds" },
-    { name: "Segun Adebayo", image: "https://bit.ly/sage-adebayo" },
-    { name: "Prosper Otemuyiwa", image: "https://bit.ly/prosper-baba" },
-    { name: "Ryan Florence", image: "https://bit.ly/ryan-florence" },
-  ];
-
-  const people2 = people.map((s) => {
-    return {
-      label: s.name,
-      value: s.image,
-    };
-  });
 
   return (
     <Box mt={[10, 0]}>
