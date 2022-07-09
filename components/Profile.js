@@ -78,7 +78,17 @@ export default function Profile(props) {
                 p={[null, 6]}
                 bg={useColorModeValue("white", "gray.700")}
                 spacing={6}
+                shadow="sm"
+                rounded="md"
               >
+                <Text
+                  mt={-1}
+                  fontSize="sm"
+                  color={useColorModeValue("gray.600", "gray.400")}
+                >
+                  Last Visits:
+                </Text>
+                {/* Below will be the list of recent visits collapsed when opened, further details will be shown */}
                 <List>
                   <li>Hi</li> <li>Bye</li>
                 </List>
