@@ -25,13 +25,17 @@ import {
   RadioGroup,
   Radio,
 } from "@chakra-ui/react";
-import Profile from "@/components/Profile";
+import Profile from "@/components/profile";
 import GridBreak from "@/components/grid-break";
+import TestComponent from "@/components/clinical-data";
+import TestComponent2 from "@/components/test-comp2";
 // import { FaUser } from "react-icons/fa";
 
 export default function Component() {
   return (
     <Box bg={useColorModeValue("gray.50", "inherit")} p={10}>
+      <TestComponent2 />
+      <GridBreak />
       <Profile />
       <GridBreak />
       <Box>
@@ -43,15 +47,14 @@ export default function Component() {
           <GridItem colSpan={{ md: 1 }}>
             <Box px={[4, 0]}>
               <Heading fontSize="lg" fontWeight="md" lineHeight="6">
-                Profile
+                Clinical Matter
               </Heading>
               <Text
                 mt={1}
                 fontSize="sm"
                 color={useColorModeValue("gray.600", "gray.400")}
               >
-                This information will be displayed publicly so be careful what
-                you share.
+                Please enter medicinal description of patient.
               </Text>
             </Box>
           </GridItem>
@@ -103,10 +106,10 @@ export default function Component() {
                       fontWeight="md"
                       color={useColorModeValue("gray.700", "gray.50")}
                     >
-                      About
+                      History
                     </FormLabel>
                     <Textarea
-                      placeholder="you@example.com"
+                      placeholder="In pain because..."
                       mt={1}
                       rows={3}
                       shadow="sm"
@@ -114,7 +117,7 @@ export default function Component() {
                       fontSize={{ sm: "sm" }}
                     />
                     <FormHelperText>
-                      Brief description for your profile. URLs are hyperlinked.
+                      Brief description of Clinical History
                     </FormHelperText>
                   </FormControl>
                 </div>
@@ -125,7 +128,8 @@ export default function Component() {
                     fontWeight="md"
                     color={useColorModeValue("gray.700", "gray.50")}
                   >
-                    Photo
+                    Problems - Decide whether this needs to be one word multi
+                    select options
                   </FormLabel>
                   <Flex alignItems="center" mt={1}>
                     <Avatar
@@ -246,6 +250,8 @@ export default function Component() {
           </GridItem>
         </SimpleGrid>
       </Box>
+      <GridBreak />
+      <TestComponent />
       <Box visibility={{ base: "hidden", sm: "visible" }} aria-hidden="true">
         <Box py={5}>
           <Box
