@@ -27,8 +27,7 @@ import {
   List,
   color,
 } from "@chakra-ui/react";
-
-import SearchBar from "./search-bar";
+import GridBreak from "./grid-break";
 
 export default function Profile(props) {
   const [selected, setSelected] = useState({
@@ -54,6 +53,7 @@ export default function Profile(props) {
 
   return (
     <Box mt={[10, 0]}>
+      <GridBreak />
       <SimpleGrid
         display={{ base: "initial", md: "grid" }}
         columns={{ md: 3 }}
@@ -61,39 +61,16 @@ export default function Profile(props) {
       >
         <GridItem colSpan={{ md: 1 }}>
           <Box px={[4, 0]}>
-            <Stack>
-              <Heading fontSize="lg" fontWeight="medium" lineHeight="6">
-                Personal Information
-              </Heading>
-              <Text
-                mt={1}
-                fontSize="sm"
-                color={useColorModeValue("gray.600", "gray.400")}
-              >
-                Use a permanent address where you can receive mail.
-              </Text>
-              <Box
-                px={4}
-                py={5}
-                p={[null, 6]}
-                bg={useColorModeValue("white", "gray.700")}
-                spacing={6}
-                shadow="sm"
-                rounded="md"
-              >
-                <Text
-                  mt={-1}
-                  fontSize="sm"
-                  color={useColorModeValue("gray.600", "gray.400")}
-                >
-                  Last Visits:
-                </Text>
-                {/* Below will be the list of recent visits collapsed when opened, further details will be shown */}
-                <List>
-                  <li>Hi</li> <li>Bye</li>
-                </List>
-              </Box>
-            </Stack>
+            <Heading fontSize="lg" fontWeight="medium" lineHeight="6">
+              New Patient Info
+            </Heading>
+            <Text
+              mt={1}
+              fontSize="sm"
+              color={useColorModeValue("gray.600", "gray.400")}
+            >
+              Use a permanent address where you can receive mail.
+            </Text>
           </Box>
         </GridItem>
         <GridItem mt={[5, null, 0]} colSpan={{ md: 2 }}>
@@ -102,6 +79,7 @@ export default function Profile(props) {
             shadow="base"
             rounded={[null, "md"]}
             overflow={{ sm: "hidden" }}
+            autoComplete="off"
           >
             <Stack
               px={4}
@@ -110,83 +88,120 @@ export default function Profile(props) {
               bg={useColorModeValue("white", "gray.700")}
               spacing={6}
             >
-              <SimpleGrid
-                columns={6}
-                spacing={6}
-                onChange={(p) => {
-                  console.log(
-                    "Print main box",
-                    p,
-                    p.target.value,
-                    p.target.id,
-                    p.target.name,
-                    peopleList,
-                    peopleList.length
-                  );
-                  if (p.target.value.length > 2 && !peopleList.length > 0)
-                    fetchData(p.target.id, p.target.value);
-                }}
-              >
-                <FormControl as={GridItem} colSpan={[6, 3]}>
+              <SimpleGrid columns={6} spacing={6}>
+                <FormControl as={GridItem} colSpan={[6, 2]} autoComplete="off">
+                  <Input
+                    autoComplete="off"
+                    name="hidden"
+                    type="text"
+                    role="presentation"
+                    style={{ display: "none" }}
+                  />
                   <FormLabel
-                    htmlFor="first_name"
+                    // htmlFor="first_name"
                     fontSize="sm"
                     fontWeight="md"
                     color={useColorModeValue("gray.700", "gray.50")}
                   >
                     First name
                   </FormLabel>
-                  <SearchBar
-                    options={peopleList}
-                    selected={selected}
-                    handleSelected={setSelected}
-                    handleCreation={setCreated}
-                    inputName={"first"}
-                    inputField={"name"}
+                  <Input
+                    type="text"
+                    name="username"
+                    id="username"
+                    autoComplete="off"
+                    mt={1}
+                    focusBorderColor="pink.400"
+                    shadow="sm"
+                    size="sm"
+                    w="full"
+                    rounded="md"
                   />
                 </FormControl>
 
-                <FormControl as={GridItem} colSpan={[6, 3]}>
+                <FormControl as={GridItem} colSpan={[6, 2]} autoComplete="off">
+                  <Input
+                    autoComplete="off"
+                    name="hidden"
+                    type="text"
+                    style={{ display: "none" }}
+                  />
                   <FormLabel
-                    htmlFor="last_name"
+                    // htmlFor="last_name"
                     fontSize="sm"
                     fontWeight="md"
                     color={useColorModeValue("gray.700", "gray.50")}
                   >
                     Last name
                   </FormLabel>
-                  <SearchBar
-                    options={peopleList}
-                    selected={selected}
-                    handleSelected={setSelected}
-                    handleCreation={setCreated}
-                    inputName={"lemail"}
-                    inputField={"email"}
+                  <Input
+                    type="text"
+                    name="last-name"
+                    id="last-name"
+                    autoComplete="off"
+                    mt={1}
+                    focusBorderColor="pink.400"
+                    shadow="sm"
+                    size="sm"
+                    w="full"
+                    rounded="md"
                   />
                 </FormControl>
 
-                <FormControl as={GridItem} colSpan={[6, 6]}>
+                <FormControl as={GridItem} colSpan={[6, 2]} autoComplete="off">
+                  <Input
+                    autoComplete="off"
+                    name="hidden"
+                    type="text"
+                    style={{ display: "none" }}
+                  />
                   <FormLabel
-                    htmlFor="email_address"
                     fontSize="sm"
                     fontWeight="md"
                     color={useColorModeValue("gray.700", "gray.50")}
                   >
-                    Phone Number
+                    Number
                   </FormLabel>
-                  <SearchBar
-                    options={peopleList}
-                    selected={selected}
-                    handleSelected={setSelected}
-                    handleCreation={setCreated}
-                    inputName={"email"}
-                    inputField={"email"}
+                  <InputGroup size="sm" mt={1}>
+                    <InputLeftAddon rounded="md" children="+91" />
+                    <Input
+                      type="tel"
+                      name="pn"
+                      id="pn"
+                      autoComplete="off"
+                      // mt={1}
+                      focusBorderColor="pink.400"
+                      shadow="sm"
+                      size="sm"
+                      w="full"
+                      rounded="md"
+                    />
+                  </InputGroup>
+                </FormControl>
+                <FormControl as={GridItem} colSpan={6}>
+                  <FormLabel
+                    // htmlFor="street_address"
+                    fontSize="sm"
+                    fontWeight="md"
+                    color={useColorModeValue("gray.700", "gray.50")}
+                  >
+                    History
+                  </FormLabel>
+                  <Input
+                    type="text"
+                    name="adrs"
+                    id="adrs"
+                    autoComplete="off"
+                    mt={1}
+                    focusBorderColor="pink.400"
+                    shadow="sm"
+                    size="sm"
+                    w="full"
+                    rounded="md"
                   />
                 </FormControl>
-
-                <FormControl as={GridItem} colSpan={[6, 3]}>
+                <FormControl as={GridItem} colSpan={[6, 3, null, 2]} mt={1}>
                   <FormLabel
-                    htmlFor="gender"
                     fontSize="sm"
                     fontWeight="md"
                     color={useColorModeValue("gray.700", "gray.50")}
@@ -213,7 +228,6 @@ export default function Profile(props) {
                 </FormControl>
                 <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
                   <FormLabel
-                    htmlFor="age"
                     fontSize="sm"
                     fontWeight="md"
                     color={useColorModeValue("gray.700", "gray.50")}
@@ -222,32 +236,51 @@ export default function Profile(props) {
                   </FormLabel>
                   <Input
                     type="text"
-                    name="age"
-                    id="age"
+                    name="adrs"
+                    id="adrs"
                     autoComplete="off"
-                    // mt={1}
+                    mt={1}
                     focusBorderColor="pink.400"
                     shadow="sm"
                     size="sm"
                     w="full"
                     rounded="md"
-                    input="U"
                   />
                 </FormControl>
-
-                <FormControl as={GridItem} colSpan={6}>
+                <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
                   <FormLabel
-                    htmlFor="address"
                     fontSize="sm"
                     fontWeight="md"
                     color={useColorModeValue("gray.700", "gray.50")}
                   >
-                    Address
+                    Reffered By
                   </FormLabel>
                   <Input
                     type="text"
-                    name="address"
-                    id="address-replaceit"
+                    name="adrs"
+                    id="adrs"
+                    autoComplete="off"
+                    mt={1}
+                    focusBorderColor="pink.400"
+                    shadow="sm"
+                    size="sm"
+                    w="full"
+                    rounded="md"
+                  />
+                </FormControl>
+                <FormControl as={GridItem} colSpan={6}>
+                  <FormLabel
+                    // htmlFor="street_address"
+                    fontSize="sm"
+                    fontWeight="md"
+                    color={useColorModeValue("gray.700", "gray.50")}
+                  >
+                    Adress
+                  </FormLabel>
+                  <Input
+                    type="text"
+                    name="adrs"
+                    id="adrs"
                     autoComplete="off"
                     mt={1}
                     focusBorderColor="pink.400"
@@ -270,7 +303,6 @@ export default function Profile(props) {
                 colorScheme="pink"
                 _focus={{ shadow: "" }}
                 fontWeight="md"
-                disabled={!isCreated}
               >
                 Save
               </Button>
@@ -278,6 +310,7 @@ export default function Profile(props) {
           </chakra.form>
         </GridItem>
       </SimpleGrid>
+      <GridBreak />
     </Box>
   );
 }
