@@ -28,7 +28,7 @@ import {
 import Profile from "@/components/profile";
 import GridBreak from "@/components/grid-break";
 import TestComponent from "@/components/clinical-data";
-import TestComponent2 from "@/components/test-comp2";
+import TestComponent2 from "@/components/visit-box";
 // import { FaUser } from "react-icons/fa";
 
 export default function Component() {
@@ -79,7 +79,7 @@ export default function Component() {
                       fontWeight="md"
                       color={useColorModeValue("gray.700", "gray.50")}
                     >
-                      Website
+                      Chief Complaint
                     </FormLabel>
                     <InputGroup size="sm">
                       <InputLeftAddon
@@ -99,7 +99,7 @@ export default function Component() {
                   </FormControl>
                 </SimpleGrid>
 
-                <div>
+                <GridItem>
                   <FormControl id="email" mt={1}>
                     <FormLabel
                       fontSize="sm"
@@ -120,7 +120,7 @@ export default function Component() {
                       Brief description of Clinical History
                     </FormHelperText>
                   </FormControl>
-                </div>
+                </GridItem>
 
                 <FormControl>
                   <FormLabel
