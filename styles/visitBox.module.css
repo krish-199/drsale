@@ -1,0 +1,8 @@
+.linkText {
+    color: pink;
+    font-size: small;
+}
+
+.linkText:hover {
+    color: aqua;
+}
