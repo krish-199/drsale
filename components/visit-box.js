@@ -26,11 +26,15 @@ import {
   Radio,
   List,
   color,
+  Switch,
 } from "@chakra-ui/react";
 
 import SearchBar from "./search-bar";
 import GridBreak from "./grid-break";
-export default function TestComponent2(props) {
+import Link from "next/link";
+import style from "../styles/visitBox.module.css";
+
+export default function VisitBox(props) {
   const [selected, setSelected] = useState({
     _id: "",
     name: "",
@@ -54,17 +58,23 @@ export default function TestComponent2(props) {
 
   return (
     <Box mt={[10, 0]}>
+      <GridBreak />
       <SimpleGrid
         display={{ base: "initial", md: "grid" }}
         columns={{ md: 3 }}
         spacing={{ md: 6 }}
       >
         <GridItem colSpan={{ md: 1 }}>
-          <Box px={[4, 0]}>
+          <Box px={[0, 0]}>
             <Stack>
-              <Heading fontSize="lg" fontWeight="medium" lineHeight="6">
-                Sale
-              </Heading>
+              <Stack direction={"row"}>
+                <Heading fontSize="lg" fontWeight="medium" lineHeight="6">
+                  Patient Visit
+                </Heading>
+                <Link href="new-patient">
+                  <a className={style.linkText}>New Patient ?</a>
+                </Link>
+              </Stack>
               <Text
                 mt={1}
                 fontSize="sm"
@@ -73,6 +83,7 @@ export default function TestComponent2(props) {
                 Let's see what can be added here!!
               </Text>
               <GridBreak />
+
               <Stack>
                 <Text
                   mt={-1}
@@ -150,7 +161,11 @@ export default function TestComponent2(props) {
                     peopleList,
                     peopleList.length
                   );
-                  if (p.target.value.length > 2 && !peopleList.length > 0)
+                  if (
+                    !newPnt &&
+                    p.target.value.length > 2 &&
+                    !peopleList.length > 0
+                  )
                     fetchData(p.target.id, p.target.value);
                 }}
               >
@@ -235,7 +250,6 @@ export default function TestComponent2(props) {
                 </FormControl>
                 <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
                   <FormLabel
-                    htmlFor="gender"
                     fontSize="sm"
                     fontWeight="md"
                     color={useColorModeValue("gray.700", "gray.50")}
@@ -262,7 +276,6 @@ export default function TestComponent2(props) {
                 </FormControl>
                 <FormControl as={GridItem} colSpan={[6, 3, null, 1]}>
                   <FormLabel
-                    htmlFor="gender"
                     fontSize="sm"
                     fontWeight="md"
                     color={useColorModeValue("gray.700", "gray.50")}
@@ -374,7 +387,7 @@ export default function TestComponent2(props) {
                     <option>Other</option>
                   </Select>
                 </FormControl>
-                <FormControl as={GridItem} colSpan={[6, 3]}>
+                <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
                   <FormLabel
                     htmlFor="address"
                     fontSize="sm"
@@ -383,18 +396,28 @@ export default function TestComponent2(props) {
                   >
                     Amount
                   </FormLabel>
-                  <Input
-                    type="text"
-                    name="address"
-                    id="address-replaceit"
-                    autoComplete="off"
-                    mt={1}
-                    focusBorderColor="pink.400"
-                    shadow="sm"
-                    size="sm"
-                    w="full"
-                    rounded="md"
-                  />
+                  <InputGroup size="sm">
+                    <InputLeftAddon
+                      bg={useColorModeValue("gray.50", "gray.800")}
+                      color={useColorModeValue("gray.500", "gay.50")}
+                      rounded="md"
+                    >
+                      Rs.
+                    </InputLeftAddon>
+                    <Input
+                      type="text"
+                      name="address"
+                      id="address-replaceit"
+                      autoComplete="off"
+                      // mt={1}
+                      focusBorderColor="pink.400"
+                      shadow="sm"
+                      size="sm"
+                      w="full"
+                      rounded="md"
+                      placeholder="0.00"
+                    />
+                  </InputGroup>
                 </FormControl>
               </SimpleGrid>
             </Stack>
@@ -417,6 +440,7 @@ export default function TestComponent2(props) {
           </chakra.form>
         </GridItem>
       </SimpleGrid>
+      <GridBreak />
     </Box>
   );
 }
