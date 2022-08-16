@@ -47,7 +47,7 @@ export default function VisitBox(props) {
 
   const fetchData = (searchId, searchValue) => {
     console.log("print search val", searchId, searchValue);
-    fetch("/api/search-user", {
+    fetch("/api/searchUser", {
       method: "POST",
       body: JSON.stringify({ searchField: "name", searchValue: "jo" }),
     })
