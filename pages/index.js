@@ -40,14 +40,17 @@ export default function Home({ isConnected }) {
           <Link href="visit">
             <a className={styles.card}>
               <h2>Patient Visit &rarr;</h2>
-              <p>Record new Patient Visit</p>
+              <p>Record new Patient Visit!!&nbsp;&nbsp;&nbsp;&nbsp;</p>
+              <p>&nbsp;&nbsp;</p>
             </a>
           </Link>
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+          <Link href="new-patient">
+            <a className={styles.card}>
+              <h2>Add new Patient &rarr;</h2>
+              <p>Gathering details of new Patient</p>
+            </a>
+          </Link>
 
           <a
             href="https://github.com/vercel/next.js/tree/canary/examples"
