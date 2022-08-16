@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import useSWR from "swr";
 
 export default function UserList() {
-  const { data, error } = useSWR("/api/search-user", fetcher);
+  const { data, error } = useSWR("/api/searchUser", fetcher);
   if (error) return <div>Failed to load</div>;
   if (!data) return <div>Loading...</div>;
   return (
