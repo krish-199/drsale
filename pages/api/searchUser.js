@@ -7,7 +7,7 @@ export default async (req, res) => {
   const body = JSON.parse(req.body);
   let re = new RegExp(body.searchValue);
   const users = await db
-    .collection("users")
+    .collection("patients")
     .find({ [body.searchField]: re })
     .limit(50)
     .toArray();
