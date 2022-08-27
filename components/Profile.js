@@ -1,4 +1,5 @@
 import { React, useState } from "react";
+import { useRouter } from "next/router";
 import {
   chakra,
   Box,
@@ -14,41 +15,79 @@ import {
   Input,
   InputGroup,
   InputLeftAddon,
-  FormHelperText,
-  Textarea,
-  Avatar,
-  Icon,
   Button,
-  VisuallyHidden,
   Select,
-  Checkbox,
-  RadioGroup,
-  Radio,
-  List,
-  color,
 } from "@chakra-ui/react";
 import GridBreak from "./grid-break";
+import WarningCard from "./warning-card";
+import CustomModal from "./modal";
 
 export default function Profile(props) {
-  const [selected, setSelected] = useState({
-    _id: "",
-    name: "",
-    email: "",
-    password: "",
+  const router = useRouter();
+
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    phone: "",
+    gender: "",
+    age: "",
+    address: "",
+    reffered_by: "",
+    history: "",
   });
 
-  const [isCreated, setCreated] = useState(false);
-  const [peopleList, setPeopleList] = useState([]);
+  const [patientId, setPatientId] = useState("");
 
-  const fetchData = (searchId, searchValue) => {
-    console.log("print search val", searchId, searchValue);
-    fetch("/api/search-user", {
+  const [modalState, setModalState] = useState(false);
+
+  const fetchData = () => {
+    fetch("/api/newPatient", {
       method: "POST",
-      body: JSON.stringify({ searchField: "name", searchValue: "jo" }),
+      body: JSON.stringify(formData),
     })
       .then((res) => res.json())
-      .then((data) => setPeopleList(data))
+      .then((data) => {
+        if (data.userExist) {
+          setModalState(true);
+          setPatientId(data.patientId.toString());
+        } else
+          router.push({ pathname: "/visit", query: { id: data.patientId } });
+      })
       .catch((err) => console.error(err));
+  };
+
+  const modalAction = () => {
+    if (patientId.length > 0)
+      router.push({ pathname: "/visit", query: { id: patientId } });
+  };
+
+  const closeModal = () => {
+    setModalState(false);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetchData();
+  };
+
+  const getModal = () => {
+    return (
+      <CustomModal
+        header={"Patient info already exists!!!"}
+        isOpen={modalState}
+        onClose={closeModal}
+        secText={"Continue..."}
+        secAction={modalAction}
+      >
+        <>
+          <p>
+            Patient details trying to add already exist in the records, do you
+            still want to proceed ?
+          </p>
+          <WarningCard text={"On continuing will use previous records"} />
+        </>
+      </CustomModal>
+    );
   };
 
   return (
@@ -80,6 +119,7 @@ export default function Profile(props) {
             rounded={[null, "md"]}
             overflow={{ sm: "hidden" }}
             autoComplete="off"
+            onSubmit={handleSubmit}
           >
             <Stack
               px={4}
@@ -89,14 +129,12 @@ export default function Profile(props) {
               spacing={6}
             >
               <SimpleGrid columns={6} spacing={6}>
-                <FormControl as={GridItem} colSpan={[6, 2]} autoComplete="off">
-                  <Input
-                    autoComplete="off"
-                    name="hidden"
-                    type="text"
-                    role="presentation"
-                    style={{ display: "none" }}
-                  />
+                <FormControl
+                  as={GridItem}
+                  colSpan={[6, 2]}
+                  isRequired
+                  autoComplete="off"
+                >
                   <FormLabel
                     // htmlFor="first_name"
                     fontSize="sm"
@@ -116,16 +154,21 @@ export default function Profile(props) {
                     size="sm"
                     w="full"
                     rounded="md"
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        first_name: e.target.value,
+                      }))
+                    }
                   />
                 </FormControl>
 
-                <FormControl as={GridItem} colSpan={[6, 2]} autoComplete="off">
-                  <Input
-                    autoComplete="off"
-                    name="hidden"
-                    type="text"
-                    style={{ display: "none" }}
-                  />
+                <FormControl
+                  as={GridItem}
+                  colSpan={[6, 2]}
+                  isRequired
+                  autoComplete="off"
+                >
                   <FormLabel
                     // htmlFor="last_name"
                     fontSize="sm"
@@ -145,16 +188,16 @@ export default function Profile(props) {
                     size="sm"
                     w="full"
                     rounded="md"
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        last_name: e.target.value,
+                      }))
+                    }
                   />
                 </FormControl>
 
                 <FormControl as={GridItem} colSpan={[6, 2]} autoComplete="off">
-                  <Input
-                    autoComplete="off"
-                    name="hidden"
-                    type="text"
-                    style={{ display: "none" }}
-                  />
                   <FormLabel
                     fontSize="sm"
                     fontWeight="md"
@@ -175,6 +218,12 @@ export default function Profile(props) {
                       size="sm"
                       w="full"
                       rounded="md"
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          phone: e.target.value,
+                        }))
+                      }
                     />
                   </InputGroup>
                 </FormControl>
@@ -189,8 +238,8 @@ export default function Profile(props) {
                   </FormLabel>
                   <Input
                     type="text"
-                    name="adrs"
-                    id="adrs"
+                    name="history"
+                    id="history"
                     autoComplete="off"
                     mt={1}
                     focusBorderColor="pink.400"
@@ -198,9 +247,20 @@ export default function Profile(props) {
                     size="sm"
                     w="full"
                     rounded="md"
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        history: e.target.value,
+                      }))
+                    }
                   />
                 </FormControl>
-                <FormControl as={GridItem} colSpan={[6, 3, null, 2]} mt={1}>
+                <FormControl
+                  as={GridItem}
+                  colSpan={[6, 3, null, 2]}
+                  mt={1}
+                  isRequired
+                >
                   <FormLabel
                     fontSize="sm"
                     fontWeight="md"
@@ -220,6 +280,12 @@ export default function Profile(props) {
                     w="full"
                     rounded="md"
                     input="U"
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        gender: e.target.value,
+                      }))
+                    }
                   >
                     <option>Male</option>
                     <option>Female</option>
@@ -235,9 +301,9 @@ export default function Profile(props) {
                     Age
                   </FormLabel>
                   <Input
-                    type="text"
-                    name="adrs"
-                    id="adrs"
+                    type="number"
+                    name="age"
+                    id="age"
                     autoComplete="off"
                     mt={1}
                     focusBorderColor="pink.400"
@@ -245,6 +311,12 @@ export default function Profile(props) {
                     size="sm"
                     w="full"
                     rounded="md"
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        age: e.target.value,
+                      }))
+                    }
                   />
                 </FormControl>
                 <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
@@ -257,8 +329,8 @@ export default function Profile(props) {
                   </FormLabel>
                   <Input
                     type="text"
-                    name="adrs"
-                    id="adrs"
+                    name="reffered_by"
+                    id="reffered_by"
                     autoComplete="off"
                     mt={1}
                     focusBorderColor="pink.400"
@@ -266,6 +338,12 @@ export default function Profile(props) {
                     size="sm"
                     w="full"
                     rounded="md"
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        reffered_by: e.target.value,
+                      }))
+                    }
                   />
                 </FormControl>
                 <FormControl as={GridItem} colSpan={6}>
@@ -288,6 +366,12 @@ export default function Profile(props) {
                     size="sm"
                     w="full"
                     rounded="md"
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        address: e.target.value,
+                      }))
+                    }
                   />
                 </FormControl>
               </SimpleGrid>
@@ -311,6 +395,7 @@ export default function Profile(props) {
         </GridItem>
       </SimpleGrid>
       <GridBreak />
+      {getModal()}
     </Box>
   );
 }
