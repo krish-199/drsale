@@ -25,7 +25,7 @@ export default function SearchBar(props) {
     <CreatableSelect
       name={`${props.inputName}-name`}
       id={`${props.inputName}-${props.inputName.length}`}
-      inputId={`${props.inputName}-replaceit`}
+      inputId={`${props.inputName}_replaceit`}
       instanceId={`${props.inputName}-value`}
       autoComplete="off"
       isLoading={!(props.options.length > 0)}
@@ -53,10 +53,6 @@ export default function SearchBar(props) {
       size="sm"
       onChange={(e) => {
         props.handleSelected(e);
-      }}
-      onCreateOption={(e) => {
-        props.handleCreation(true);
-        props.handleSelected({ ...props.selected, [props.inputName]: e });
       }}
     />
   );
