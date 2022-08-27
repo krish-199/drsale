@@ -3,7 +3,7 @@ import VisitBox from "@/components/visit-box";
 import { Box, useColorModeValue } from "@chakra-ui/react";
 import styles from "../styles/visit.module.css";
 
-const visit = () => {
+const Visit = () => {
   return (
     <div className={styles.contianer}>
       <Box bg={useColorModeValue("gray.50", "inherit")} p={10}>
@@ -13,4 +13,4 @@ const visit = () => {
   );
 };
 
-export default visit;
+export default Visit;
