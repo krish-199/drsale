@@ -1,0 +1,28 @@
+.listStyle {
+    padding: 5px;
+    border-radius: 5px;
+    border: 2px solid transparent;
+}
+
+.listStyle:hover {
+    border: 2px solid palevioletred;
+    cursor: pointer;
+}
+
+.modalBody {
+    /* text-align: center;
+    color: pink; */
+}
+
+.textDiv {
+    display: flex;
+    justify-content: space-between;
+}
+
+.keyText {
+    color: cadetblue;
+}
+
+.valueText {
+    color: yellowgreen;
+}
