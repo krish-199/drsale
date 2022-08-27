@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect, useRef } from "react";
 import {
   chakra,
   Box,
@@ -25,31 +25,88 @@ import {
   RadioGroup,
   Radio,
   List,
+  ListItem,
+  ListIcon,
+  OrderedList,
+  UnorderedList,
   color,
   Switch,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
 import SearchBar from "./search-bar";
 import GridBreak from "./grid-break";
 import Link from "next/link";
 import style from "../styles/visitBox.module.css";
+import ListPopup from "./list-popup";
 
 export default function VisitBox(props) {
+  const router = useRouter();
+  const prevRef = useRef("");
+
+  let queryId = router.query.id;
+
   const [selected, setSelected] = useState({
     _id: "",
-    name: "",
-    email: "",
-    password: "",
+    first_name: "",
+    last_name: "",
+    phone: "",
   });
 
-  const [isCreated, setCreated] = useState(false);
+  const [lastDetails, setLastDetails] = useState([]);
+
   const [peopleList, setPeopleList] = useState([]);
+
+  useEffect(() => {
+    if (queryId && prevRef.current !== queryId) {
+      fetch(`/api/getUser/${queryId}`, { method: "GET" })
+        .then((res) => res.json())
+        .then((data) => {
+          setPeopleList([data]);
+          setSelected({
+            _id: data._id,
+            first_name: data.first_name,
+            last_name: data.last_name,
+            phone: data.phone,
+          });
+        })
+        .catch((err) => console.error(err));
+      fetchLastDetails(queryId);
+    }
+    prevRef.current = queryId;
+  }, [queryId]);
+
+  useEffect(() => {
+    if (
+      selected &&
+      selected._id &&
+      selected._id.length > 0 &&
+      prevRef.current !== selected._id &&
+      lastDetails.length > 0
+    ) {
+      fetchLastDetails(selected._id);
+    }
+    prevRef.current = selected && selected._id ? selected._id : "";
+  }, [selected]);
+
+  const fetchLastDetails = (pid, type = "patient_visit") => {
+    fetch(`/api/lastDetails/${pid}/${type}`, { method: "GET" })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("print data", data);
+        setLastDetails(data);
+      })
+      .catch((err) => console.error(err));
+  };
 
   const fetchData = (searchId, searchValue) => {
     console.log("print search val", searchId, searchValue);
     fetch("/api/searchUser", {
       method: "POST",
-      body: JSON.stringify({ searchField: "name", searchValue: "jo" }),
+      body: JSON.stringify({
+        searchField: searchId.replace("replaceit", "name"),
+        searchValue,
+      }),
     })
       .then((res) => res.json())
       .then((data) => setPeopleList(data))
@@ -71,7 +128,7 @@ export default function VisitBox(props) {
                 <Heading fontSize="lg" fontWeight="medium" lineHeight="6">
                   Patient Visit
                 </Heading>
-                <Link href="new-patient">
+                <Link href="/new-patient">
                   <a className={style.linkText}>New Patient ?</a>
                 </Link>
               </Stack>
@@ -96,38 +153,24 @@ export default function VisitBox(props) {
                   px={4}
                   py={5}
                   p={[null, 6]}
-                  bg={useColorModeValue("pink.200", "cyan.900")}
+                  bg={useColorModeValue("snow", "slategrey")}
                   spacing={6}
-                  shadow="sm"
+                  shadow="lg"
                   rounded="md"
+                  h={"fit-content"}
+                  maxH={"300px"}
+                  overflowY={"auto"}
                 >
-                  {/* Below will be the list of recent visits collapsed when opened, further details will be shown */}
-                  <List>
-                    <li>Hi</li> <li>Bye</li>
-                  </List>
-                </Box>
-              </Stack>
-              <GridBreak />
-              <Stack>
-                <Text
-                  mt={-1}
-                  fontSize="sm"
-                  color={useColorModeValue("gray.600", "gray.400")}
-                >
-                  Last Prescribed Medicine
-                </Text>
-                <Box
-                  px={4}
-                  py={5}
-                  p={[null, 6]}
-                  bg={useColorModeValue("blue.200", "teal.900")}
-                  spacing={6}
-                  shadow="sm"
-                  rounded="md"
-                >
-                  {/* Below will be the list of recent visits collapsed when opened, further details will be shown */}
-                  <List>
-                    <li>Hi</li> <li>Bye</li>
+                  <List spacing={3}>
+                    {lastDetails && lastDetails.length > 0 ? (
+                      lastDetails.map((d) => (
+                        <ListItem key={d._id}>
+                          <ListPopup data={d} />
+                        </ListItem>
+                      ))
+                    ) : (
+                      <ListItem>No last visits to show</ListItem>
+                    )}
                   </List>
                 </Box>
               </Stack>
@@ -161,11 +204,7 @@ export default function VisitBox(props) {
                     peopleList,
                     peopleList.length
                   );
-                  if (
-                    !newPnt &&
-                    p.target.value.length > 2 &&
-                    !peopleList.length > 0
-                  )
+                  if (p.target.value.length > 2 && !peopleList.length > 0)
                     fetchData(p.target.id, p.target.value);
                 }}
               >
@@ -182,9 +221,8 @@ export default function VisitBox(props) {
                     options={peopleList}
                     selected={selected}
                     handleSelected={setSelected}
-                    handleCreation={setCreated}
                     inputName={"first"}
-                    inputField={"name"}
+                    inputField={"first_name"}
                   />
                 </FormControl>
 
@@ -201,15 +239,14 @@ export default function VisitBox(props) {
                     options={peopleList}
                     selected={selected}
                     handleSelected={setSelected}
-                    handleCreation={setCreated}
-                    inputName={"lemail"}
-                    inputField={"email"}
+                    inputName={"last"}
+                    inputField={"last_name"}
                   />
                 </FormControl>
 
                 <FormControl as={GridItem} colSpan={[6, 2]}>
                   <FormLabel
-                    htmlFor="email_address"
+                    htmlFor="phone"
                     fontSize="sm"
                     fontWeight="md"
                     color={useColorModeValue("gray.700", "gray.50")}
@@ -220,9 +257,8 @@ export default function VisitBox(props) {
                     options={peopleList}
                     selected={selected}
                     handleSelected={setSelected}
-                    handleCreation={setCreated}
-                    inputName={"email"}
-                    inputField={"email"}
+                    inputName={"phone"}
+                    inputField={"phone"}
                   />
                 </FormControl>
                 <FormControl as={GridItem} colSpan={[6, 3]}>
@@ -432,7 +468,7 @@ export default function VisitBox(props) {
                 colorScheme="pink"
                 _focus={{ shadow: "" }}
                 fontWeight="md"
-                disabled={!isCreated}
+                onClick={handleSave}
               >
                 Save
               </Button>
