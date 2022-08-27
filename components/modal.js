@@ -11,23 +11,35 @@ import {
 } from "@chakra-ui/react";
 
 const CustomModal = (props) => {
-  const { header, body, isOpen, onClose, closeText, secText, secAction } =
-    props;
+  const {
+    header,
+    children,
+    isOpen,
+    onClose,
+    closeText,
+    secRemove,
+    secText,
+    secAction,
+  } = props;
   return (
-    <Modal isOpen={true} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{header}</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>{body}</ModalBody>
+        <ModalBody>{children}</ModalBody>
 
         <ModalFooter>
           <Button colorScheme="blue" mr={3} onClick={onClose}>
             {closeText ?? "Close"}
           </Button>
-          <Button colorScheme="yellow" variant="ghost">
-            Secondary Action
-          </Button>
+          {!secRemove ? (
+            <Button colorScheme="yellow" variant="ghost" onClick={secAction}>
+              {secText ?? "Secondary Action"}
+            </Button>
+          ) : (
+            ""
+          )}
         </ModalFooter>
       </ModalContent>
     </Modal>
