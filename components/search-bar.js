@@ -29,12 +29,6 @@ export default function SearchBar(props) {
       instanceId={`${props.inputName}-value`}
       autoComplete="off"
       isLoading={!(props.options.length > 0)}
-      allowCreateWhileLoading
-      getNewOptionData={(inputValue, optionLabel) => ({
-        [props.inputField]: optionLabel,
-        // id: inputValue,
-        __isNew__: true,
-      })}
       options={(props.options.length > 0 && props.options) || []}
       noOptionsMessage={"Please enter atleast 2 letters..."}
       // key={JSON.stringify(peopleList.length)}
