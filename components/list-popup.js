@@ -1,11 +1,4 @@
 import React, { useState } from "react";
-import {
-  List,
-  ListItem,
-  ListIcon,
-  OrderedList,
-  UnorderedList,
-} from "@chakra-ui/react";
 import CustomModal from "./modal";
 import style from "../styles/listPopup.module.css";
 
