@@ -9,7 +9,7 @@ export default function Movies({ movies }) {
       </p>
       <ul>
         {movies.map((movie) => (
-          <li>
+          <li key={movie.title}>
             <h2>{movie.title}</h2>
             <h3>{movie.metacritic}</h3>
             <p>{movie.plot}</p>

@@ -1,5 +1,5 @@
 import fetcher from "@/lib/fetchJson";
-import React, { useEffect } from "react";
+import React from "react";
 import useSWR from "swr";
 
 export default function UserList() {
@@ -14,7 +14,7 @@ export default function UserList() {
       </p>
       <ul>
         {data.map((movie) => (
-          <li>
+          <li key={movie.name}>
             <h2>{movie.name}</h2>
             <h3>{movie.email}</h3>
           </li>

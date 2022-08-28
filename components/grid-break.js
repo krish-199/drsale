@@ -1,30 +1,5 @@
 import React from "react";
-import {
-  chakra,
-  Box,
-  Flex,
-  useColorModeValue,
-  SimpleGrid,
-  GridItem,
-  Heading,
-  Text,
-  Stack,
-  FormControl,
-  FormLabel,
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  FormHelperText,
-  Textarea,
-  Avatar,
-  Icon,
-  Button,
-  VisuallyHidden,
-  Select,
-  Checkbox,
-  RadioGroup,
-  Radio,
-} from "@chakra-ui/react";
+import { Box, useColorModeValue } from "@chakra-ui/react";
 
 export default function GridBreak() {
   return (

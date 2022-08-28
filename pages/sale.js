@@ -530,7 +530,7 @@ export default function Component() {
                 fontSize="sm"
                 color={useColorModeValue("gray.600", "gray.400")}
               >
-                Decide which communications you'd like to receive and how.
+                Decide which communications you&apos;d like to receive and how.
               </Text>
             </Box>
           </GridItem>

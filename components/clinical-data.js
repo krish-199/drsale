@@ -2,7 +2,6 @@ import { React, useState } from "react";
 import {
   chakra,
   Box,
-  Flex,
   useColorModeValue,
   SimpleGrid,
   GridItem,
@@ -12,20 +11,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  InputGroup,
-  InputLeftAddon,
-  FormHelperText,
-  Textarea,
-  Avatar,
-  Icon,
-  Button,
-  VisuallyHidden,
-  Select,
-  Checkbox,
-  RadioGroup,
-  Radio,
-  List,
-  color,
 } from "@chakra-ui/react";
 
 import SearchBar from "./search-bar";

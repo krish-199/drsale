@@ -21,7 +21,7 @@ const ListPopup = ({ data }) => {
           {Object.keys(data).map((e) => {
             if (e.includes("_id") || e.includes("date")) return "";
             return (
-              <span className={style.textDiv}>
+              <span className={style.textDiv} key={e}>
                 <div className={style.keyText}>{e}:</div>
                 <p className={style.valueText}>{data[e]}</p>
               </span>
