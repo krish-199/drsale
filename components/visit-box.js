@@ -1,8 +1,7 @@
-import { React, useState, useEffect, useRef } from "react";
+import { React, useState, useEffect, useRef, useReducer } from "react";
 import {
   chakra,
   Box,
-  Flex,
   useColorModeValue,
   SimpleGrid,
   GridItem,
@@ -14,23 +13,11 @@ import {
   Input,
   InputGroup,
   InputLeftAddon,
-  FormHelperText,
-  Textarea,
-  Avatar,
-  Icon,
   Button,
-  VisuallyHidden,
   Select,
-  Checkbox,
-  RadioGroup,
-  Radio,
   List,
   ListItem,
-  ListIcon,
-  OrderedList,
-  UnorderedList,
-  color,
-  Switch,
+  useToast,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
@@ -40,9 +27,14 @@ import Link from "next/link";
 import style from "../styles/visitBox.module.css";
 import ListPopup from "./list-popup";
 
-export default function VisitBox(props) {
+const formReducer = (state, action) => {
+  return { ...state, [action.field]: action.payload };
+};
+
+export default function VisitBox() {
   const router = useRouter();
   const prevRef = useRef("");
+  const toast = useToast();
 
   let queryId = router.query.id;
 
@@ -57,6 +49,12 @@ export default function VisitBox(props) {
 
   const [peopleList, setPeopleList] = useState([]);
 
+  const [formData, fromDispatch] = useReducer(formReducer, {});
+
+  const handleTextChange = (e) => {
+    fromDispatch({ field: e.target.name, payload: e.target.value });
+  };
+
   useEffect(() => {
     if (queryId && prevRef.current !== queryId) {
       fetch(`/api/getUser/${queryId}`, { method: "GET" })
@@ -69,38 +67,52 @@ export default function VisitBox(props) {
             last_name: data.last_name,
             phone: data.phone,
           });
+          fromDispatch({ field: "patient_id", payload: data._id });
+          toast({
+            title: "Patient details fetched",
+            status: "success",
+            duration: 6000,
+            isClosable: true,
+          });
         })
         .catch((err) => console.error(err));
       fetchLastDetails(queryId);
     }
     prevRef.current = queryId;
-  }, [queryId]);
+  }, [queryId, fetchLastDetails, toast]);
 
   useEffect(() => {
-    if (
-      selected &&
-      selected._id &&
-      selected._id.length > 0 &&
-      prevRef.current !== selected._id &&
-      lastDetails.length > 0
-    ) {
+    if (selected && selected._id && selected._id.length > 0) {
       fetchLastDetails(selected._id);
+      fromDispatch({ field: "patient_id", payload: selected._id });
     }
-    prevRef.current = selected && selected._id ? selected._id : "";
-  }, [selected]);
+  }, [selected, fetchLastDetails]);
 
   const fetchLastDetails = (pid, type = "patient_visit") => {
     fetch(`/api/lastDetails/${pid}/${type}`, { method: "GET" })
       .then((res) => res.json())
       .then((data) => {
-        console.log("print data", data);
         setLastDetails(data);
+        toast({
+          title: "Patient details fetched",
+          status: "success",
+          duration: 6000,
+          isClosable: true,
+        });
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        toast({
+          title: "Error while fetching",
+          description: err,
+          status: "error",
+          duration: 6000,
+          isClosable: true,
+        });
+      });
   };
 
   const fetchData = (searchId, searchValue) => {
-    console.log("print search val", searchId, searchValue);
     fetch("/api/searchUser", {
       method: "POST",
       body: JSON.stringify({
@@ -110,7 +122,42 @@ export default function VisitBox(props) {
     })
       .then((res) => res.json())
       .then((data) => setPeopleList(data))
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        toast({
+          title: "Error while fetching",
+          description: err,
+          status: "error",
+          duration: 6000,
+          isClosable: true,
+        });
+      });
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault();
+    fetch("/api/visit", { method: "POST", body: JSON.stringify(formData) })
+      .then((res) => res.json())
+      .then((data) => {
+        toast({
+          title: "Visit details have been saved",
+          description: JSON.stringify(data),
+          status: "success",
+          duration: 6000,
+          isClosable: true,
+        });
+        window.location = "visit";
+      })
+      .catch((err) => {
+        console.error(err);
+        toast({
+          title: "Error while fetching",
+          description: err,
+          status: "error",
+          duration: 6000,
+          isClosable: true,
+        });
+      });
   };
 
   return (
@@ -137,7 +184,7 @@ export default function VisitBox(props) {
                 fontSize="sm"
                 color={useColorModeValue("gray.600", "gray.400")}
               >
-                Let's see what can be added here!!
+                Let&apos;s see what can be added here!!
               </Text>
               <GridBreak />
 
@@ -195,15 +242,6 @@ export default function VisitBox(props) {
                 columns={6}
                 spacing={6}
                 onChange={(p) => {
-                  console.log(
-                    "Print main box",
-                    p,
-                    p.target.value,
-                    p.target.id,
-                    p.target.name,
-                    peopleList,
-                    peopleList.length
-                  );
                   if (p.target.value.length > 2 && !peopleList.length > 0)
                     fetchData(p.target.id, p.target.value);
                 }}
@@ -272,8 +310,8 @@ export default function VisitBox(props) {
                   </FormLabel>
                   <Input
                     type="text"
-                    name="age"
-                    id="age"
+                    name="symptoms"
+                    id="symptoms"
                     autoComplete="off"
                     // mt={1}
                     focusBorderColor="pink.400"
@@ -282,6 +320,7 @@ export default function VisitBox(props) {
                     w="full"
                     rounded="md"
                     input="U"
+                    onChange={handleTextChange}
                   />
                 </FormControl>
                 <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
@@ -293,9 +332,9 @@ export default function VisitBox(props) {
                     Medicine Type
                   </FormLabel>
                   <Select
-                    id="gender"
-                    name="gender"
-                    autoComplete="gender"
+                    id="medicine_type"
+                    name="medicine_type"
+                    autoComplete="off"
                     placeholder="Select option"
                     mt={1}
                     focusBorderColor="pink.400"
@@ -304,6 +343,7 @@ export default function VisitBox(props) {
                     w="full"
                     rounded="md"
                     input="U"
+                    onChange={handleTextChange}
                   >
                     <option>Allopathy</option>
                     <option>Homeopathy</option>
@@ -320,24 +360,9 @@ export default function VisitBox(props) {
                   </FormLabel>
                   <Box w="fit-content" display="flex">
                     <Input
-                      type="text"
-                      name="age"
-                      id="age"
-                      autoComplete="off"
-                      placeholder="min"
-                      // mt={1}
-                      focusBorderColor="pink.400"
-                      shadow="sm"
-                      size="sm"
-                      w="full"
-                      rounded="md"
-                      input="U"
-                    />
-                    /
-                    <Input
-                      type="text"
-                      name="age"
-                      id="age"
+                      type="number"
+                      name="bmax"
+                      id="bmax"
                       autoComplete="off"
                       placeholder="max"
                       // mt={1}
@@ -347,12 +372,28 @@ export default function VisitBox(props) {
                       w="full"
                       rounded="md"
                       input="U"
+                      onChange={handleTextChange}
+                    />
+                    /
+                    <Input
+                      type="number"
+                      name="bmin"
+                      id="bmin"
+                      autoComplete="off"
+                      placeholder="min"
+                      // mt={1}
+                      focusBorderColor="pink.400"
+                      shadow="sm"
+                      size="sm"
+                      w="full"
+                      rounded="md"
+                      input="U"
+                      onChange={handleTextChange}
                     />
                   </Box>
                 </FormControl>
                 <FormControl as={GridItem} colSpan={[6, 3]}>
                   <FormLabel
-                    htmlFor="age"
                     fontSize="sm"
                     fontWeight="md"
                     color={useColorModeValue("gray.700", "gray.50")}
@@ -361,8 +402,8 @@ export default function VisitBox(props) {
                   </FormLabel>
                   <Input
                     type="text"
-                    name="age"
-                    id="age"
+                    name="prescribed_medicine"
+                    id="prescribed_medicine"
                     autoComplete="off"
                     // mt={1}
                     focusBorderColor="pink.400"
@@ -371,6 +412,7 @@ export default function VisitBox(props) {
                     w="full"
                     rounded="md"
                     input="U"
+                    onChange={handleTextChange}
                   />
                 </FormControl>
                 <FormControl as={GridItem} colSpan={[6, 3]}>
@@ -384,8 +426,8 @@ export default function VisitBox(props) {
                   </FormLabel>
                   <Input
                     type="text"
-                    name="age"
-                    id="age"
+                    name="differential_diagnosis"
+                    id="differential_diagnosis"
                     autoComplete="off"
                     // mt={1}
                     focusBorderColor="pink.400"
@@ -394,11 +436,11 @@ export default function VisitBox(props) {
                     w="full"
                     rounded="md"
                     input="U"
+                    onChange={handleTextChange}
                   />
                 </FormControl>
                 <FormControl as={GridItem} colSpan={[6, 3]}>
                   <FormLabel
-                    htmlFor="address"
                     fontSize="sm"
                     fontWeight="md"
                     color={useColorModeValue("gray.700", "gray.50")}
@@ -406,9 +448,9 @@ export default function VisitBox(props) {
                     Payment Mode
                   </FormLabel>
                   <Select
-                    id="gender"
-                    name="gender"
-                    autoComplete="gender"
+                    id="payment_mode"
+                    name="payment_mode"
+                    autoComplete="off"
                     placeholder="Select option"
                     mt={1}
                     focusBorderColor="pink.400"
@@ -417,15 +459,15 @@ export default function VisitBox(props) {
                     w="full"
                     rounded="md"
                     input="U"
+                    onChange={handleTextChange}
                   >
                     <option>UPI</option>
                     <option>Cash</option>
                     <option>Other</option>
                   </Select>
                 </FormControl>
-                <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
+                <FormControl as={GridItem} colSpan={[6, 3, null, 2]} isRequired>
                   <FormLabel
-                    htmlFor="address"
                     fontSize="sm"
                     fontWeight="md"
                     color={useColorModeValue("gray.700", "gray.50")}
@@ -441,9 +483,9 @@ export default function VisitBox(props) {
                       Rs.
                     </InputLeftAddon>
                     <Input
-                      type="text"
-                      name="address"
-                      id="address-replaceit"
+                      type="number"
+                      name="amount"
+                      id="amount"
                       autoComplete="off"
                       // mt={1}
                       focusBorderColor="pink.400"
@@ -452,6 +494,7 @@ export default function VisitBox(props) {
                       w="full"
                       rounded="md"
                       placeholder="0.00"
+                      onChange={handleTextChange}
                     />
                   </InputGroup>
                 </FormControl>
