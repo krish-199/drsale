@@ -23,7 +23,7 @@ export default withSession(async (req, res) => {
         password: hashPassword,
       });
       await user.save();
-      req.session.set("user", { id: user._id, email: user.email });
+      req.session.user = { id: user._id, email: user.email };
       await req.session.save();
       return res.status(httpStatus.OK).end();
     }

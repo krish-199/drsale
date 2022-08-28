@@ -24,7 +24,7 @@ export default withSession(async (req, res) => {
     const valid = password === user.password ? true : false;
     // if the password is a match
     if (valid === true) {
-      req.session.set("user", { id: user._id, email: user.email });
+      req.session.user = { id: user._id, email: user.email };
       await req.session.save();
       return res.json(user);
     } else {
