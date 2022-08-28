@@ -113,7 +113,7 @@ export default function VisitBox() {
   };
 
   const fetchData = (searchId, searchValue) => {
-    fetch("/api/searchUser", {
+    fetch("/api/search-user", {
       method: "POST",
       body: JSON.stringify({
         searchField: searchId.replace("replaceit", "name"),

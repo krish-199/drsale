@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useUser from "@/lib/useUser";
+import useUser from "@/lib/use-user";
 // layout for page
 import {
   Flex,
@@ -17,7 +17,7 @@ import {
   CircularProgress,
 } from "@chakra-ui/react";
 import ErrorMessage from "@/components/error-message";
-import fetchJson from "@/lib/fetchJson";
+import fetchJson from "@/lib/fetch-json";
 
 export default function SimpleCard() {
   const { mutateUser } = useUser({

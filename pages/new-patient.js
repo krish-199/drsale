@@ -1,5 +1,5 @@
 import Profile from "@/components/profile";
-import useUser from "@/lib/useUser";
+import useUser from "@/lib/use-user";
 import { useRouter } from "next/router";
 import { Box, useColorModeValue, useToast } from "@chakra-ui/react";
 import React, { useEffect } from "react";

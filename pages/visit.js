@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import useUser from "@/lib/useUser";
+import useUser from "@/lib/use-user";
 import { useRouter } from "next/router";
 import VisitBox from "@/components/visit-box";
 import { Box, useColorModeValue, useToast } from "@chakra-ui/react";

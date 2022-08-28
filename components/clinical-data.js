@@ -28,7 +28,7 @@ export default function TestComponent() {
 
   const fetchData = (searchId, searchValue) => {
     console.log("print search val", searchId, searchValue);
-    fetch("/api/searchUser", {
+    fetch("/api/search-user", {
       method: "POST",
       body: JSON.stringify({ searchField: "name", searchValue: "jo" }),
     })
