@@ -1,8 +1,8 @@
 import clientPromise from "@/lib/mongodb";
+import httpStatus from "http-status";
 
-export default async (req, res) => {
+const getMovies = async (req, res) => {
   const client = await clientPromise;
-  console.log("Printing promise", client);
 
   const db = client.db();
 
@@ -13,5 +13,7 @@ export default async (req, res) => {
     .limit(20)
     .toArray();
 
-  res.json(movies);
+  res.send(httpStatus.OK).json(movies);
 };
+
+export default getMovies;

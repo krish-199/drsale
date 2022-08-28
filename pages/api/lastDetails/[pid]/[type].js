@@ -1,7 +1,7 @@
 import clientPromise from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
 
-export default async (req, res) => {
+const getDetailsByIdAndType = async (req, res) => {
   const { pid, type } = req.query;
 
   const client = await clientPromise;
@@ -15,3 +15,5 @@ export default async (req, res) => {
 
   res.json(details);
 };
+
+export default getDetailsByIdAndType;

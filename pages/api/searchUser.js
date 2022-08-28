@@ -1,7 +1,7 @@
 import clientPromise from "@/lib/mongodb";
 import httpStatus from "http-status";
 
-export default async (req, res) => {
+const searchUser = async (req, res) => {
   const client = await clientPromise;
 
   const db = client.db();
@@ -9,7 +9,7 @@ export default async (req, res) => {
   let re = new RegExp(body.searchValue);
   const users = await db
     .collection("patients")
-    .find({ [body.searchField]: re }, function (err, result) {
+    .find({ [body.searchField]: re }, function (err) {
       if (err) {
         console.log("err", err);
         res
@@ -22,3 +22,5 @@ export default async (req, res) => {
 
   res.status(httpStatus.OK).json(users);
 };
+
+export default searchUser;

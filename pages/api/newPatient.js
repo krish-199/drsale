@@ -1,6 +1,7 @@
 import clientPromise from "@/lib/mongodb";
+import httpStatus from "http-status";
 
-export default async (req, res) => {
+const getPatient = async (req, res) => {
   const client = await clientPromise;
 
   const db = client.db();
@@ -29,18 +30,23 @@ export default async (req, res) => {
 
   if (user)
     res
-      .status(200)
+      .status(httpStatus.OK)
       .send(JSON.stringify({ userExist: true, patientId: user._id }));
   else {
     await db
       .collection("patients")
       .insertOne(newDocument, function (err, result) {
-        if (err) res.status(400).send("Error Inserting Patient details!!");
+        if (err)
+          res
+            .status(httpStatus.BAD_REQUEST)
+            .send("Error Inserting Patient details!!");
         else {
           res
-            .status(200)
+            .status(httpStatus.OK)
             .send(JSON.stringify({ patientId: result.insertedId }));
         }
       });
   }
 };
+
+export default getPatient;
