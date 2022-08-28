@@ -12,7 +12,7 @@ export default withSession(async (req, res) => {
     // get user from db
     const user = await client
       .db()
-      .collection("dmin")
+      .collection("admin")
       .findOne({ email: email.toLowerCase() });
     if (!user) {
       // password not valid
