@@ -214,7 +214,7 @@ export default function Profile() {
                     Number
                   </FormLabel>
                   <InputGroup size="sm" mt={1}>
-                    <InputLeftAddon rounded="md" children="+91" />
+                    <InputLeftAddon rounded="md">+91</InputLeftAddon>
                     <Input
                       type="tel"
                       name="pn"

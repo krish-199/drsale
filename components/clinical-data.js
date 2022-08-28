@@ -16,7 +16,7 @@ import {
 import SearchBar from "./search-bar";
 import GridBreak from "./grid-break";
 
-export default function TestComponent(props) {
+export default function TestComponent() {
   const [selected, setSelected] = useState({
     _id: "",
     name: "",
@@ -24,7 +24,6 @@ export default function TestComponent(props) {
     password: "",
   });
 
-  const [isCreated, setCreated] = useState(false);
   const [peopleList, setPeopleList] = useState([]);
 
   const fetchData = (searchId, searchValue) => {
@@ -96,7 +95,6 @@ export default function TestComponent(props) {
                   options={peopleList}
                   selected={selected}
                   handleSelected={setSelected}
-                  handleCreation={setCreated}
                   inputName={"first"}
                   inputField={"name"}
                 />
@@ -114,7 +112,6 @@ export default function TestComponent(props) {
                   options={peopleList}
                   selected={selected}
                   handleSelected={setSelected}
-                  handleCreation={setCreated}
                   inputName={"lemail"}
                   inputField={"email"}
                 />
@@ -132,7 +129,6 @@ export default function TestComponent(props) {
                   options={peopleList}
                   selected={selected}
                   handleSelected={setSelected}
-                  handleCreation={setCreated}
                   inputName={"email"}
                   inputField={"email"}
                 />
@@ -238,7 +234,6 @@ export default function TestComponent(props) {
                   options={peopleList}
                   selected={selected}
                   handleSelected={setSelected}
-                  handleCreation={setCreated}
                   inputName={"email"}
                   inputField={"email"}
                 />

@@ -79,14 +79,14 @@ export default function VisitBox() {
       fetchLastDetails(queryId);
     }
     prevRef.current = queryId;
-  }, [queryId, fetchLastDetails, toast]);
+  }, [queryId]);
 
   useEffect(() => {
     if (selected && selected._id && selected._id.length > 0) {
       fetchLastDetails(selected._id);
       fromDispatch({ field: "patient_id", payload: selected._id });
     }
-  }, [selected, fetchLastDetails]);
+  }, [selected]);
 
   const fetchLastDetails = (pid, type = "patient_visit") => {
     fetch(`/api/lastDetails/${pid}/${type}`, { method: "GET" })

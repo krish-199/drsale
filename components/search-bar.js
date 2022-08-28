@@ -4,18 +4,18 @@ import { CreatableSelect } from "chakra-react-select";
 
 export default function SearchBar(props) {
   const chakraStyles = {
-    dropdownIndicator: (provided, state) => ({
+    dropdownIndicator: (provided) => ({
       ...provided,
       bg: "transparent",
     }),
-    control: (provided, state) => ({
+    control: (provided) => ({
       ...provided,
       rounded: "md",
       shadow: "sm",
       // mt: 1,
       h: 8,
     }),
-    container: (provided, state) => ({
+    container: (provided) => ({
       ...provided,
       pt: 1,
       h: 8,
