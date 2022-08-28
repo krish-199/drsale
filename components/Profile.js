@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import {
   chakra,
   Box,
-  Flex,
   useColorModeValue,
   SimpleGrid,
   GridItem,
@@ -19,10 +18,12 @@ import {
   Select,
 } from "@chakra-ui/react";
 import GridBreak from "./grid-break";
+import Link from "next/link";
+import style from "../styles/visitBox.module.css";
 import WarningCard from "./warning-card";
 import CustomModal from "./modal";
 
-export default function Profile(props) {
+export default function Profile() {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -100,16 +101,23 @@ export default function Profile(props) {
       >
         <GridItem colSpan={{ md: 1 }}>
           <Box px={[4, 0]}>
-            <Heading fontSize="lg" fontWeight="medium" lineHeight="6">
-              New Patient Info
-            </Heading>
-            <Text
-              mt={1}
-              fontSize="sm"
-              color={useColorModeValue("gray.600", "gray.400")}
-            >
-              Use a permanent address where you can receive mail.
-            </Text>
+            <Stack>
+              <Stack direction={"row"}>
+                <Heading fontSize="lg" fontWeight="medium" lineHeight="6">
+                  New Patient Info
+                </Heading>
+                <Link href="/visit">
+                  <a className={style.linkText}>Record a new visit ?</a>
+                </Link>
+              </Stack>
+              <Text
+                mt={1}
+                fontSize="sm"
+                color={useColorModeValue("gray.600", "gray.400")}
+              >
+                Add new patient details.
+              </Text>
+            </Stack>
           </Box>
         </GridItem>
         <GridItem mt={[5, null, 0]} colSpan={{ md: 2 }}>
