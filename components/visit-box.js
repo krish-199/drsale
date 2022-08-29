@@ -47,6 +47,8 @@ export default function VisitBox() {
 
   const [lastDetails, setLastDetails] = useState([]);
 
+  const [isDisabled, setIsDisabled] = useState(true);
+
   const [peopleList, setPeopleList] = useState([]);
 
   const [formData, fromDispatch] = useReducer(formReducer, {});
@@ -85,6 +87,7 @@ export default function VisitBox() {
     if (selected && selected._id && selected._id.length > 0) {
       fetchLastDetails(selected._id);
       fromDispatch({ field: "patient_id", payload: selected._id });
+      setIsDisabled(false);
     }
   }, [selected]);
 
@@ -230,6 +233,7 @@ export default function VisitBox() {
             shadow="base"
             rounded={[null, "md"]}
             overflow={{ sm: "hidden" }}
+            onSubmit={handleSave}
           >
             <Stack
               px={4}
@@ -299,7 +303,11 @@ export default function VisitBox() {
                     inputField={"phone"}
                   />
                 </FormControl>
-                <FormControl as={GridItem} colSpan={[6, 3]}>
+                <FormControl
+                  as={GridItem}
+                  colSpan={[6, 3]}
+                  isDisabled={isDisabled}
+                >
                   <FormLabel
                     htmlFor="age"
                     fontSize="sm"
@@ -323,7 +331,11 @@ export default function VisitBox() {
                     onChange={handleTextChange}
                   />
                 </FormControl>
-                <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
+                <FormControl
+                  as={GridItem}
+                  colSpan={[6, 3, null, 2]}
+                  isDisabled={isDisabled}
+                >
                   <FormLabel
                     fontSize="sm"
                     fontWeight="md"
@@ -350,7 +362,11 @@ export default function VisitBox() {
                     <option>Other</option>
                   </Select>
                 </FormControl>
-                <FormControl as={GridItem} colSpan={[6, 3, null, 1]}>
+                <FormControl
+                  as={GridItem}
+                  colSpan={[6, 3, null, 1]}
+                  isDisabled={isDisabled}
+                >
                   <FormLabel
                     fontSize="sm"
                     fontWeight="md"
@@ -392,7 +408,11 @@ export default function VisitBox() {
                     />
                   </Box>
                 </FormControl>
-                <FormControl as={GridItem} colSpan={[6, 3]}>
+                <FormControl
+                  as={GridItem}
+                  colSpan={[6, 3]}
+                  isDisabled={isDisabled}
+                >
                   <FormLabel
                     fontSize="sm"
                     fontWeight="md"
@@ -415,7 +435,11 @@ export default function VisitBox() {
                     onChange={handleTextChange}
                   />
                 </FormControl>
-                <FormControl as={GridItem} colSpan={[6, 3]}>
+                <FormControl
+                  as={GridItem}
+                  colSpan={[6, 3]}
+                  isDisabled={isDisabled}
+                >
                   <FormLabel
                     htmlFor="age"
                     fontSize="sm"
@@ -439,7 +463,11 @@ export default function VisitBox() {
                     onChange={handleTextChange}
                   />
                 </FormControl>
-                <FormControl as={GridItem} colSpan={[6, 3]}>
+                <FormControl
+                  as={GridItem}
+                  colSpan={[6, 3]}
+                  isDisabled={isDisabled}
+                >
                   <FormLabel
                     fontSize="sm"
                     fontWeight="md"
@@ -466,7 +494,12 @@ export default function VisitBox() {
                     <option>Other</option>
                   </Select>
                 </FormControl>
-                <FormControl as={GridItem} colSpan={[6, 3, null, 2]} isRequired>
+                <FormControl
+                  as={GridItem}
+                  colSpan={[6, 3, null, 2]}
+                  isDisabled={isDisabled}
+                  isRequired
+                >
                   <FormLabel
                     fontSize="sm"
                     fontWeight="md"
@@ -511,7 +544,7 @@ export default function VisitBox() {
                 colorScheme="pink"
                 _focus={{ shadow: "" }}
                 fontWeight="md"
-                onClick={handleSave}
+                isDisabled={isDisabled}
               >
                 Save
               </Button>
