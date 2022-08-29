@@ -31,7 +31,7 @@ const formReducer = (state, action) => {
   return { ...state, [action.field]: action.payload };
 };
 
-export default function VisitBox() {
+export default function VisitBox(props) {
   const router = useRouter();
   const prevRef = useRef("");
   const toast = useToast();
@@ -47,7 +47,7 @@ export default function VisitBox() {
 
   const [lastDetails, setLastDetails] = useState([]);
 
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const [peopleList, setPeopleList] = useState([]);
 
@@ -149,7 +149,6 @@ export default function VisitBox() {
           duration: 6000,
           isClosable: true,
         });
-        window.location = "visit";
       })
       .catch((err) => {
         console.error(err);
@@ -161,6 +160,7 @@ export default function VisitBox() {
           isClosable: true,
         });
       });
+    props.updateKey();
   };
 
   return (
