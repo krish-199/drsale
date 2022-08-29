@@ -9,16 +9,14 @@ const searchUser = async (req, res) => {
   let re = new RegExp(body.searchValue);
   const users = await db
     .collection("patients")
-    .find({ [body.searchField]: re }, function (err) {
-      if (err) {
-        console.log("err", err);
-        res
-          .status(httpStatus["400_MESSAGE"])
-          .send("Error Storing Visit details!!");
-      }
-    })
+    .find({ [body.searchField]: re })
     .limit(50)
     .toArray();
+
+  if (users.length === 0) {
+    console.log("Patient donesn't exist");
+    res.status(httpStatus["400_MESSAGE"]).send("Patient doesn't exist");
+  }
 
   res.status(httpStatus.OK).json(users);
 };
