@@ -9,16 +9,14 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 
 const LoginModal = (props) => {
-  const router = useRouter();
   const { isOpen, action, onClose } = props;
   return (
     <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>"Please login before continuing"</ModalHeader>
+        <ModalHeader>Please login before continuing</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <p>You are not logged in....</p>
@@ -27,7 +25,7 @@ const LoginModal = (props) => {
 
         <ModalFooter>
           <Button colorScheme="red" mr={3} onClick={action}>
-            "To Login..."
+            To Login...
           </Button>
         </ModalFooter>
       </ModalContent>
