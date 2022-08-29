@@ -79,12 +79,19 @@ export default function VisitBox(props) {
         })
         .catch((err) => console.error(err));
       fetchLastDetails(queryId);
+      setIsDisabled(false);
     }
     prevRef.current = queryId;
   }, [queryId]);
 
   useEffect(() => {
-    if (selected && selected._id && selected._id.length > 0) {
+    if (
+      selected &&
+      selected._id &&
+      selected._id.length > 0 &&
+      !(lastDetails.length > 0) &&
+      isDisabled
+    ) {
       fetchLastDetails(selected._id);
       fromDispatch({ field: "patient_id", payload: selected._id });
       setIsDisabled(false);
@@ -95,9 +102,17 @@ export default function VisitBox(props) {
     fetch(`/api/lastDetails/${pid}/${type}`, { method: "GET" })
       .then((res) => res.json())
       .then((data) => {
-        setLastDetails(data);
+        setLastDetails(
+          data.sort((a, b) =>
+            new Date(b.date) > new Date(a.date)
+              ? 1
+              : new Date(a.date) > new Date(b.date)
+              ? -1
+              : 0
+          )
+        );
         toast({
-          title: "Patient details fetched",
+          title: "Patient last visits fetched",
           status: "success",
           duration: 6000,
           isClosable: true,
