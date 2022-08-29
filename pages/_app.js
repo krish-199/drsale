@@ -37,7 +37,7 @@ function MyApp({ Component, pageProps }) {
     <ChakraProvider>
       <Component {...pageProps} />
       <LoginModal
-        isOpen={loginState}
+        isOpen={loginState && router.pathname !== "/login"}
         action={loginNavigate}
         onClose={loginNavigate}
       />
