@@ -47,7 +47,7 @@ export default function VisitBox(props) {
 
   const [lastDetails, setLastDetails] = useState([]);
 
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const [peopleList, setPeopleList] = useState([]);
 
