@@ -3,6 +3,7 @@ import useUser from "@/lib/use-user";
 import { useRouter } from "next/router";
 import { ChakraProvider, useToast } from "@chakra-ui/react";
 import LoginModal from "@/components/login-modal";
+import PageLoader from "@/components/page-loader";
 
 function MyApp({ Component, pageProps }) {
   const { user } = useUser();
@@ -12,8 +13,10 @@ function MyApp({ Component, pageProps }) {
 
   const [loginState, setLoginState] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    if (isMounted.current)
+    if (isMounted.current && user) {
       user?.isLoggedIn
         ? toast({
             title: "Logged In",
@@ -28,6 +31,8 @@ function MyApp({ Component, pageProps }) {
             duration: 3000,
             isClosable: false,
           }) && setLoginState(true);
+      setIsLoading(false);
+    }
     isMounted.current = true;
   }, [user]);
 
@@ -35,12 +40,18 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ChakraProvider>
-      <Component {...pageProps} />
-      <LoginModal
-        isOpen={loginState && router.pathname !== "/login"}
-        action={loginNavigate}
-        onClose={loginNavigate}
-      />
+      {isLoading ? (
+        <PageLoader />
+      ) : (
+        <>
+          <Component {...pageProps} />
+          <LoginModal
+            isOpen={loginState && router.pathname !== "/login"}
+            action={loginNavigate}
+            onClose={loginNavigate}
+          />
+        </>
+      )}
     </ChakraProvider>
   );
 }
