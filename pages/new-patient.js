@@ -15,13 +15,12 @@ const NewPatient = () => {
 
   useEffect(() => {
     user?.isLoggedIn
-      ? setLoginState(false) &&
-        toast({
+      ? toast({
           title: "Logged In",
           status: "success",
           duration: 2000,
           isClosable: true,
-        })
+        }) && setLoginState(false)
       : toast({
           title: "Not logged in",
           description: "You are logged in. Please login to continue",
