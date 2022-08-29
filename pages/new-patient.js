@@ -1,5 +1,5 @@
 import Profile from "@/components/profile";
-import { Box, useColorModeValue, useToast } from "@chakra-ui/react";
+import { Box, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
 import styles from "../styles/visit.module.css";
 
