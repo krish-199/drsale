@@ -27,9 +27,9 @@ const addVisit = async (req, res) => {
         if ('bp_max' in body || 'bp_min' in body) {
           db.collection('bp_track').insertOne({
             visit_id: result.insertedId,
-            patient_id: newDocument[patient_id],
-            bp_max: Number(bp_max),
-            bp_min: Number(bp_min),
+            patient_id: newDocument['patient_id'],
+            bp_max: Number(newDocument['bp_max']),
+            bp_min: Number(newDocument['bp_min']),
           });
         }
         res
