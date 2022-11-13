@@ -91,15 +91,18 @@ export default function VisitBox(props) {
       selected._id.length > 0 &&
       !(lastDetails.length > 0) &&
       isDisabled
-    ) {
-      fetchLastDetails(selected._id);
-      fromDispatch({ field: "patient_id", payload: selected._id });
+    )
       setIsDisabled(false);
-    }
   }, [selected]);
 
-  const fetchLastDetails = (pid, type = "patient_visit") => {
-    fetch(`/api/lastDetails/${pid}/${type}`, { method: "GET" })
+  const handleSelected = (e) => {
+    setSelected(e);
+    fetchLastDetails(e._id);
+    fromDispatch({ field: 'patient_id', payload: selected._id });
+  };
+
+  const fetchLastDetails = (pid, type = 'patient_visits') => {
+    fetch(`/api/lastDetails/${pid}/${type}`, { method: 'GET' })
       .then((res) => res.json())
       .then((data) => {
         setLastDetails(
@@ -112,8 +115,8 @@ export default function VisitBox(props) {
           )
         );
         toast({
-          title: "Patient last visits fetched",
-          status: "success",
+          title: 'Patient last visits fetched',
+          status: 'success',
           duration: 6000,
           isClosable: true,
         });
@@ -121,9 +124,9 @@ export default function VisitBox(props) {
       .catch((err) => {
         console.error(err);
         toast({
-          title: "Error while fetching",
+          title: 'Error while fetching',
           description: err,
-          status: "error",
+          status: 'error',
           duration: 6000,
           isClosable: true,
         });
@@ -131,10 +134,10 @@ export default function VisitBox(props) {
   };
 
   const fetchData = (searchId, searchValue) => {
-    fetch("/api/search-user", {
-      method: "POST",
+    fetch('/api/search-user', {
+      method: 'POST',
       body: JSON.stringify({
-        searchField: searchId.replace("replaceit", "name"),
+        searchField: searchId.replace('replaceit', 'name'),
         searchValue,
       }),
     })
@@ -143,9 +146,9 @@ export default function VisitBox(props) {
       .catch((err) => {
         console.error(err);
         toast({
-          title: "Error while fetching",
+          title: 'Error while fetching',
           description: err,
-          status: "error",
+          status: 'error',
           duration: 6000,
           isClosable: true,
         });
@@ -154,13 +157,13 @@ export default function VisitBox(props) {
 
   const handleSave = (e) => {
     e.preventDefault();
-    fetch("/api/visit", { method: "POST", body: JSON.stringify(formData) })
+    fetch('/api/visit', { method: 'POST', body: JSON.stringify(formData) })
       .then((res) => res.json())
       .then((data) => {
         toast({
-          title: "Visit details have been saved",
+          title: 'Visit details have been saved',
           description: JSON.stringify(data),
-          status: "success",
+          status: 'success',
           duration: 6000,
           isClosable: true,
         });
@@ -168,9 +171,9 @@ export default function VisitBox(props) {
       .catch((err) => {
         console.error(err);
         toast({
-          title: "Error while fetching",
+          title: 'Error while fetching',
           description: err,
-          status: "error",
+          status: 'error',
           duration: 6000,
           isClosable: true,
         });
@@ -277,7 +280,7 @@ export default function VisitBox(props) {
                   <SearchBar
                     options={peopleList}
                     selected={selected}
-                    handleSelected={setSelected}
+                    handleSelected={handleSelected}
                     inputName={'first'}
                     inputField={'first_name'}
                   />
@@ -295,7 +298,7 @@ export default function VisitBox(props) {
                   <SearchBar
                     options={peopleList}
                     selected={selected}
-                    handleSelected={setSelected}
+                    handleSelected={handleSelected}
                     inputName={'last'}
                     inputField={'last_name'}
                   />
@@ -313,7 +316,7 @@ export default function VisitBox(props) {
                   <SearchBar
                     options={peopleList}
                     selected={selected}
-                    handleSelected={setSelected}
+                    handleSelected={handleSelected}
                     inputName={'phone'}
                     inputField={'phone'}
                   />
