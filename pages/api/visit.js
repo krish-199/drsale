@@ -16,14 +16,22 @@ const addVisit = async (req, res) => {
   };
 
   await db
-    .collection("patient_visit")
+    .collection('patient_visits')
     .insertOne(newDocument, function (err, result) {
       if (err) {
-        console.log("err", err);
+        console.log('err', err);
         res
-          .status(httpStatus["400_MESSAGE"])
-          .send("Error Storing Visit details!!");
+          .status(httpStatus['400_MESSAGE'])
+          .send('Error Storing Visit details!!');
       } else {
+        if ('bp_max' in body || 'bp_min' in body) {
+          db.collection('bp_track').insertOne({
+            visit_id: result.insertedId,
+            patient_id: newDocument[patient_id],
+            bp_max: Number(bp_max),
+            bp_min: Number(bp_min),
+          });
+        }
         res
           .status(httpStatus.OK)
           .send(JSON.stringify({ visitId: result.insertedId }));
