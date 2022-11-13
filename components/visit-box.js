@@ -182,14 +182,14 @@ export default function VisitBox(props) {
     <Box mt={[10, 0]}>
       <GridBreak />
       <SimpleGrid
-        display={{ base: "initial", md: "grid" }}
+        display={{ base: 'initial', md: 'grid' }}
         columns={{ md: 3 }}
         spacing={{ md: 6 }}
       >
         <GridItem colSpan={{ md: 1 }}>
           <Box px={[0, 0]}>
             <Stack>
-              <Stack direction={"row"}>
+              <Stack direction={'row'}>
                 <Heading fontSize="lg" fontWeight="medium" lineHeight="6">
                   Patient Visit
                 </Heading>
@@ -200,7 +200,7 @@ export default function VisitBox(props) {
               <Text
                 mt={1}
                 fontSize="sm"
-                color={useColorModeValue("gray.600", "gray.400")}
+                color={useColorModeValue('gray.600', 'gray.400')}
               >
                 Let&apos;s see what can be added here!!
               </Text>
@@ -210,7 +210,7 @@ export default function VisitBox(props) {
                 <Text
                   mt={-1}
                   fontSize="sm"
-                  color={useColorModeValue("gray.600", "gray.400")}
+                  color={useColorModeValue('gray.600', 'gray.400')}
                 >
                   Last Visits
                 </Text>
@@ -218,13 +218,13 @@ export default function VisitBox(props) {
                   px={4}
                   py={5}
                   p={[null, 6]}
-                  bg={useColorModeValue("snow", "slategrey")}
+                  bg={useColorModeValue('snow', 'slategrey')}
                   spacing={6}
                   shadow="lg"
                   rounded="md"
-                  h={"fit-content"}
-                  maxH={"300px"}
-                  overflowY={"auto"}
+                  h={'fit-content'}
+                  maxH={'300px'}
+                  overflowY={'auto'}
                 >
                   <List spacing={3}>
                     {lastDetails && lastDetails.length > 0 ? (
@@ -246,15 +246,15 @@ export default function VisitBox(props) {
           <chakra.form
             method="POST"
             shadow="base"
-            rounded={[null, "md"]}
-            overflow={{ sm: "hidden" }}
+            rounded={[null, 'md']}
+            overflow={{ sm: 'hidden' }}
             onSubmit={handleSave}
           >
             <Stack
               px={4}
               py={5}
               p={[null, 6]}
-              bg={useColorModeValue("white", "gray.700")}
+              bg={useColorModeValue('white', 'gray.700')}
               spacing={6}
             >
               <SimpleGrid
@@ -270,7 +270,7 @@ export default function VisitBox(props) {
                     htmlFor="first_name"
                     fontSize="sm"
                     fontWeight="md"
-                    color={useColorModeValue("gray.700", "gray.50")}
+                    color={useColorModeValue('gray.700', 'gray.50')}
                   >
                     First name
                   </FormLabel>
@@ -278,8 +278,8 @@ export default function VisitBox(props) {
                     options={peopleList}
                     selected={selected}
                     handleSelected={setSelected}
-                    inputName={"first"}
-                    inputField={"first_name"}
+                    inputName={'first'}
+                    inputField={'first_name'}
                   />
                 </FormControl>
 
@@ -288,7 +288,7 @@ export default function VisitBox(props) {
                     htmlFor="last_name"
                     fontSize="sm"
                     fontWeight="md"
-                    color={useColorModeValue("gray.700", "gray.50")}
+                    color={useColorModeValue('gray.700', 'gray.50')}
                   >
                     Last name
                   </FormLabel>
@@ -296,8 +296,8 @@ export default function VisitBox(props) {
                     options={peopleList}
                     selected={selected}
                     handleSelected={setSelected}
-                    inputName={"last"}
-                    inputField={"last_name"}
+                    inputName={'last'}
+                    inputField={'last_name'}
                   />
                 </FormControl>
 
@@ -306,7 +306,7 @@ export default function VisitBox(props) {
                     htmlFor="phone"
                     fontSize="sm"
                     fontWeight="md"
-                    color={useColorModeValue("gray.700", "gray.50")}
+                    color={useColorModeValue('gray.700', 'gray.50')}
                   >
                     Phone Number
                   </FormLabel>
@@ -314,8 +314,8 @@ export default function VisitBox(props) {
                     options={peopleList}
                     selected={selected}
                     handleSelected={setSelected}
-                    inputName={"phone"}
-                    inputField={"phone"}
+                    inputName={'phone'}
+                    inputField={'phone'}
                   />
                 </FormControl>
                 <FormControl
@@ -327,7 +327,7 @@ export default function VisitBox(props) {
                     htmlFor="age"
                     fontSize="sm"
                     fontWeight="md"
-                    color={useColorModeValue("gray.700", "gray.50")}
+                    color={useColorModeValue('gray.700', 'gray.50')}
                   >
                     Symptoms
                   </FormLabel>
@@ -354,7 +354,7 @@ export default function VisitBox(props) {
                   <FormLabel
                     fontSize="sm"
                     fontWeight="md"
-                    color={useColorModeValue("gray.700", "gray.50")}
+                    color={useColorModeValue('gray.700', 'gray.50')}
                   >
                     Medicine Type
                   </FormLabel>
@@ -385,15 +385,15 @@ export default function VisitBox(props) {
                   <FormLabel
                     fontSize="sm"
                     fontWeight="md"
-                    color={useColorModeValue("gray.700", "gray.50")}
+                    color={useColorModeValue('gray.700', 'gray.50')}
                   >
                     BP (mmHG)
                   </FormLabel>
                   <Box w="fit-content" display="flex">
                     <Input
                       type="number"
-                      name="bmax"
-                      id="bmax"
+                      name="bp_max"
+                      id="bp_max"
                       autoComplete="off"
                       placeholder="max"
                       // mt={1}
@@ -408,8 +408,8 @@ export default function VisitBox(props) {
                     /
                     <Input
                       type="number"
-                      name="bmin"
-                      id="bmin"
+                      name="bp_min"
+                      id="bp_min"
                       autoComplete="off"
                       placeholder="min"
                       // mt={1}
@@ -431,7 +431,7 @@ export default function VisitBox(props) {
                   <FormLabel
                     fontSize="sm"
                     fontWeight="md"
-                    color={useColorModeValue("gray.700", "gray.50")}
+                    color={useColorModeValue('gray.700', 'gray.50')}
                   >
                     Prescribed Medicine
                   </FormLabel>
@@ -459,7 +459,7 @@ export default function VisitBox(props) {
                     htmlFor="age"
                     fontSize="sm"
                     fontWeight="md"
-                    color={useColorModeValue("gray.700", "gray.50")}
+                    color={useColorModeValue('gray.700', 'gray.50')}
                   >
                     Differential Diagnosis
                   </FormLabel>
@@ -486,7 +486,7 @@ export default function VisitBox(props) {
                   <FormLabel
                     fontSize="sm"
                     fontWeight="md"
-                    color={useColorModeValue("gray.700", "gray.50")}
+                    color={useColorModeValue('gray.700', 'gray.50')}
                   >
                     Payment Mode
                   </FormLabel>
@@ -518,14 +518,14 @@ export default function VisitBox(props) {
                   <FormLabel
                     fontSize="sm"
                     fontWeight="md"
-                    color={useColorModeValue("gray.700", "gray.50")}
+                    color={useColorModeValue('gray.700', 'gray.50')}
                   >
                     Amount
                   </FormLabel>
                   <InputGroup size="sm">
                     <InputLeftAddon
-                      bg={useColorModeValue("gray.50", "gray.800")}
-                      color={useColorModeValue("gray.500", "gay.50")}
+                      bg={useColorModeValue('gray.50', 'gray.800')}
+                      color={useColorModeValue('gray.500', 'gay.50')}
                       rounded="md"
                     >
                       Rs.
@@ -551,13 +551,13 @@ export default function VisitBox(props) {
             <Box
               px={{ base: 4, sm: 6 }}
               py={3}
-              bg={useColorModeValue("gray.50", "gray.900")}
+              bg={useColorModeValue('gray.50', 'gray.900')}
               textAlign="right"
             >
               <Button
                 type="submit"
                 colorScheme="pink"
-                _focus={{ shadow: "" }}
+                _focus={{ shadow: '' }}
                 fontWeight="md"
                 isDisabled={isDisabled}
               >
