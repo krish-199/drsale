@@ -54,12 +54,15 @@ export default function VisitBox(props) {
   const [formData, fromDispatch] = useReducer(formReducer, {});
 
   const handleTextChange = (e) => {
-    fromDispatch({ field: e.target.name, payload: e.target.value });
+    fromDispatch({
+      field: e.target.name,
+      payload: e.target.value.toLowerCase(),
+    });
   };
 
   useEffect(() => {
     if (queryId && prevRef.current !== queryId) {
-      fetch(`/api/getUser/${queryId}`, { method: "GET" })
+      fetch(`/api/getUser/${queryId}`, { method: 'GET' })
         .then((res) => res.json())
         .then((data) => {
           setPeopleList([data]);
@@ -69,10 +72,10 @@ export default function VisitBox(props) {
             last_name: data.last_name,
             phone: data.phone,
           });
-          fromDispatch({ field: "patient_id", payload: data._id });
+          fromDispatch({ field: 'patient_id', payload: data._id });
           toast({
-            title: "Patient details fetched",
-            status: "success",
+            title: 'Patient details fetched',
+            status: 'success',
             duration: 6000,
             isClosable: true,
           });
@@ -507,8 +510,11 @@ export default function VisitBox(props) {
                     input="U"
                     onChange={handleTextChange}
                   >
-                    <option>UPI</option>
+                    <option>GPay</option>
                     <option>Cash</option>
+                    <option>PhonePe</option>
+                    <option>Paytm</option>
+                    <option>UPI</option>
                     <option>Other</option>
                   </Select>
                 </FormControl>
