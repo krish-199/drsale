@@ -136,26 +136,28 @@ export default function VisitBox(props) {
       });
   };
 
-  const fetchData = (searchId, searchValue) => {
-    fetch('/api/search-user', {
-      method: 'POST',
-      body: JSON.stringify({
-        searchField: searchId.replace('replaceit', 'name'),
-        searchValue,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => setPeopleList(data))
-      .catch((err) => {
-        console.error(err);
-        toast({
-          title: 'Error while fetching',
-          description: err,
-          status: 'error',
-          duration: 6000,
-          isClosable: true,
-        });
+  const fetchData = async (searchId, searchValue) => {
+    try {
+      let res = await fetch('/api/search-user', {
+        method: 'POST',
+        body: JSON.stringify({
+          searchField: searchId.replace('replaceit', 'name'),
+          searchValue,
+        }),
       });
+      if (!res.ok) throw Error(await res.json());
+      res = await res.json();
+      setPeopleList(res);
+    } catch (err) {
+      console.error(`Error while fetching data ${err}`);
+      toast({
+        title: 'Error while fetching',
+        description: err.message,
+        status: 'error',
+        duration: 6000,
+        isClosable: true,
+      });
+    }
   };
 
   const handleSave = (e) => {
