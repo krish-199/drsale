@@ -269,7 +269,7 @@ export default function VisitBox(props) {
                 columns={6}
                 spacing={6}
                 onChange={(p) => {
-                  if (p.target.value.length > 2 && !peopleList.length > 0)
+                  if (p.target.value.length === 3)
                     fetchData(p.target.id, p.target.value);
                 }}
               >
