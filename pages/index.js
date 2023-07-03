@@ -37,38 +37,13 @@ export default function Home({ isConnected }) {
           </h2>
         )}
         <div className={styles.grid}>
-          <Link href="visit">
+          <Link href="chat">
             <a className={styles.card}>
-              <h2>Patient Visit &rarr;</h2>
-              <p>Record new Patient Visit!!&nbsp;&nbsp;&nbsp;&nbsp;</p>
+              <h2>Chat Window &rarr;</h2>
+              <p>Chat with people&nbsp;&nbsp;&nbsp;&nbsp;</p>
               <p>&nbsp;&nbsp;</p>
             </a>
           </Link>
-
-          <Link href="new-patient">
-            <a className={styles.card}>
-              <h2>Add new Patient &rarr;</h2>
-              <p>Gathering details of new Patient</p>
-            </a>
-          </Link>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
         </div>
       </main>
 

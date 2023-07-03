@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { ChakraProvider, useToast } from "@chakra-ui/react";
 import LoginModal from "@/components/login-modal";
 import PageLoader from "@/components/page-loader";
+import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }) {
   const { user } = useUser();
