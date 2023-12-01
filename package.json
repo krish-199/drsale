@@ -14,7 +14,7 @@
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "chakra-react-select": "^4.1.4",
-    "framer-motion": "^7.2.1",
+    "framer-motion": "^10.16.9",
     "http-status": "^1.5.2",
     "iron-session": "^6.2.0",
     "mongodb": "^6.0.0",
